@@ -427,7 +427,7 @@
     <script>
         const INVITATION_KEY = "VIP2026";
         const EMAILJS_SERVICE_ID = "service_3dastke";
-        const EMAILJS_TEMPLATE_ID = "template_gf0jl39";
+        const EMAILJS_TEMPLATE_ID = "template_94qjkzl"; // تم تحديثه ليتطابق مع صورتك الصحيحة
 
         // Hardcoded Admin Default Credentials (Can be updated dynamically from Admin Panel)
         let adminCredentials = {
@@ -551,13 +551,15 @@
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_email: email,
                     name: user,
-                    message: `كود التحقق الخاص بك لإنشاء الحساب هو: ${generatedOTP}`
+                    message: generatedOTP
                 });
 
                 showAlert("تم إرسال كود التأكيد إلى بريدك الإلكتروني بنجاح!");
                 toggleAuthMode('otp');
             } catch (err) {
-                showAlert("خطأ في إرسال البريد: " + err.message);
+                console.error("EmailJS Error:", err);
+                let errorMsg = err.text || err.message || JSON.stringify(err);
+                showAlert("خطأ في إرسال البريد: " + errorMsg);
             }
         }
 
@@ -593,12 +595,14 @@
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_email: email,
                     name: "مستخدم",
-                    message: `كود استعادة كلمة المرور الخاصة بك هو: ${resetCode}`
+                    message: resetCode
                 });
                 showAlert("تم إرسال كود الاستعادة إلى بريدك الإلكتروني بنجاح!");
                 toggleAuthMode('login');
             } catch(err) {
-                showAlert("خطأ في إرسال الإيميل: " + err.message);
+                console.error("EmailJS Error:", err);
+                let errorMsg = err.text || err.message || JSON.stringify(err);
+                showAlert("خطأ في إرسال الإيميل: " + errorMsg);
             }
         }
 
