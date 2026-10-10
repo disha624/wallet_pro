@@ -238,7 +238,7 @@
             </div>
         </div>
 
-        <!-- Registration Form (Modified: No Cloud Link text, optional phone, OTP verification) -->
+        <!-- Registration Form -->
         <div class="auth-card" id="register-box" style="display: none;">
             <h2 id="lbl-app-reg-title">إنشاء الحساب ✨</h2>
             <form onsubmit="event.preventDefault(); startRegistrationOTP();">
@@ -429,6 +429,12 @@
         const EMAILJS_SERVICE_ID = "service_3dastke";
         const EMAILJS_TEMPLATE_ID = "template_gf0jl39";
 
+        // Hardcoded Admin Default Credentials (Can be updated dynamically from Admin Panel)
+        let adminCredentials = {
+            username: localStorage.getItem('admin_user') || 'admin',
+            password: localStorage.getItem('admin_pass') || 'admin123'
+        };
+
         const firebaseConfig = {
             apiKey: "AIzaSyDI0vCuCtDP0TWV1SVNEzfjNNcOEDWr10",
             authDomain: "walletpro-b8c4e.firebaseapp.com",
@@ -447,7 +453,6 @@
         let pendingDeleteIndex = null;
         let currentLang = localStorage.getItem('app_lang') || 'ar';
         
-        // OTP & Reg Temporary Variables
         let generatedOTP = null;
         let tempRegData = null;
 
@@ -521,7 +526,6 @@
             document.getElementById('forgot-box').style.display = (mode === 'forgot') ? 'block' : 'none';
         }
 
-        // Step 1: Start Registration & Send OTP via EmailJS
         async function startRegistrationOTP() {
             let key = document.getElementById('reg-invite-key').value.trim();
             let user = document.getElementById('reg-username').value.trim();
@@ -536,7 +540,7 @@
 
             try {
                 let doc = await db.collection("users").doc(user).get();
-                if (doc.exists) {
+                if (doc.exists || user === adminCredentials.username) {
                     showAlert("اسم المستخدم مستخدم مسبقاً، اختر اسماً آخر.");
                     return;
                 }
@@ -544,7 +548,6 @@
                 generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
                 tempRegData = { user, pass, email, phone };
 
-                // Send OTP Email
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_email: email,
                     name: user,
@@ -558,7 +561,6 @@
             }
         }
 
-        // Step 2: Verify OTP and Save to Firestore
         async function verifyAndCompleteRegister() {
             let enteredOTP = document.getElementById('otp-input').value.trim();
             if (enteredOTP !== generatedOTP) {
@@ -571,7 +573,6 @@
                 userData = { password: pass, email: email, phone: phone, salary: 6000, expenses: [] };
                 await db.collection("users").doc(user).set(userData);
 
-                // Optional WhatsApp link mechanism
                 if(phone) {
                     let waMsg = encodeURIComponent(`مرحباً بك في بوصلتك المالية 💰\nبيانات حسابك:\nاليوزر: ${user}\nالباسورد: ${pass}`);
                     window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${waMsg}`, '_blank');
@@ -584,7 +585,6 @@
             }
         }
 
-        // Forgot Password Logic
         async function sendPasswordResetCode() {
             let email = document.getElementById('forgot-email').value.trim();
             let resetCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -605,6 +605,15 @@
         async function login() {
             let user = document.getElementById('login-username').value.trim();
             let pass = document.getElementById('login-password').value.trim();
+
+            // Check if login is Admin
+            if (user === adminCredentials.username && pass === adminCredentials.password) {
+                localStorage.setItem('logged_user', user);
+                currentUser = user;
+                userData = { salary: 6000, expenses: [] };
+                showApp();
+                return;
+            }
 
             try {
                 let doc = await db.collection("users").doc(user).get();
@@ -632,15 +641,22 @@
             document.getElementById('display-user').innerText = `${i18n[currentLang].welcome}, ${currentUser}`;
             
             // Check Admin Access
-            if(currentUser === 'admin') {
+            if(currentUser === adminCredentials.username) {
                 document.getElementById('menu-admin').style.display = 'flex';
+            } else {
+                document.getElementById('menu-admin').style.display = 'none';
             }
 
             document.getElementById('lang-select').value = currentLang;
             applyLanguageTexts();
             updateSubCategories();
             initChart();
-            await syncCloudData();
+            
+            if (currentUser !== adminCredentials.username) {
+                await syncCloudData();
+            } else {
+                loadUserData();
+            }
         }
 
         async function syncCloudData() {
@@ -655,8 +671,8 @@
             }
         }
 
-        // Admin Update Credentials & Invalidate Old ones
-        async function updateAdminCredentials() {
+        // Update Admin Credentials & Invalidate Old ones
+        function updateAdminCredentials() {
             let newU = document.getElementById('admin-new-user').value.trim();
             let newP = document.getElementById('admin-new-pass').value.trim();
 
@@ -665,19 +681,13 @@
                 return;
             }
 
-            try {
-                // Save new admin account and delete old 'admin' doc to invalidate it
-                await db.collection("users").doc(newU).set({
-                    password: newP, email: userData.email || "admin@fc.com", phone: userData.phone || "", salary: userData.salary, expenses: userData.expenses
-                });
-                if(currentUser !== newU) {
-                    await db.collection("users").doc(currentUser).delete();
-                }
-                showAlert("تم تحديث بيانات الأدمن وإلغاء البيانات القديمة نهائياً! سجل الدخول بالبيانات الجديدة.");
-                logout();
-            } catch(err) {
-                showAlert("حدث خطأ: " + err.message);
-            }
+            adminCredentials.username = newU;
+            adminCredentials.password = newP;
+            localStorage.setItem('admin_user', newU);
+            localStorage.setItem('admin_pass', newP);
+
+            showAlert("تم تحديث بيانات الأدمن بنجاح وإلغاء البيانات القديمة نهائياً! سجل الدخول بالبيانات الجديدة.");
+            logout();
         }
 
         function updateSubCategories() {
@@ -720,7 +730,7 @@
                 let snapshot = await db.collection("users").get();
                 document.getElementById('admin-stats-info').innerText = `إجمالي الحسابات المسجلة في القاعدة: ${snapshot.size} حساب نشط.`;
             } catch(e) {
-                document.getElementById('admin-stats-info').innerText = "تعرض لجلب الإحصائيات.";
+                document.getElementById('admin-stats-info').innerText = "تعذر جلب الإحصائيات.";
             }
         }
 
@@ -882,9 +892,11 @@
             let val = parseFloat(document.getElementById('salary-input').value);
             if(!isNaN(val)) {
                 userData.salary = val;
-                await db.collection("users").doc(currentUser).update({ salary: val });
+                if (currentUser !== adminCredentials.username) {
+                    await db.collection("users").doc(currentUser).update({ salary: val });
+                }
                 loadUserData();
-                showAlert(currentLang === 'ar' ? "تم تحديث الراتب أونلاين بنجاح! 🚀" : "Salary updated online!");
+                showAlert("تم تحديث الراتب بنجاح! 🚀");
             }
         }
 
@@ -895,7 +907,7 @@
             let amount = parseFloat(document.getElementById('amount-input').value);
 
             if(isNaN(amount) || amount <= 0) {
-                showAlert(currentLang === 'ar' ? "برجاء إدخال مبلغ صحيح" : "Please enter a valid amount.");
+                showAlert("برجاء إدخال مبلغ صحيح.");
                 return;
             }
 
@@ -906,12 +918,14 @@
             if(!userData.expenses) userData.expenses = [];
             userData.expenses.push({ category, subCategory, title, amount, date: dateStr, dateTimeStr: dateTimeStr });
             
-            await db.collection("users").doc(currentUser).update({ expenses: userData.expenses });
+            if (currentUser !== adminCredentials.username) {
+                await db.collection("users").doc(currentUser).update({ expenses: userData.expenses });
+            }
 
             document.getElementById('title-input').value = '';
             document.getElementById('amount-input').value = '';
             loadUserData();
-            showAlert(currentLang === 'ar' ? `تمت إضافة ${amount} أونلاين بنجاح! 🎉` : `Added ${amount} online successfully! 🎉`);
+            showAlert(`تمت إضافة المصروف بنجاح! 🎉`);
         }
 
         function applySidebarColor() {
@@ -926,7 +940,7 @@
             let bgGrad = localStorage.getItem('custom_gradient') || 'linear-gradient(180deg, #4f46e5, #7c3aed)';
             document.documentElement.style.setProperty('--sidebar-bg', bgGrad);
             localStorage.setItem('custom_sidebar', bgGrad);
-            showAlert(currentLang === 'ar' ? "تم المزامنة والتنسيق الأوتوماتيكي بنجاح! 🎨" : "Synced with background theme!");
+            showAlert("تم المزامنة والتنسيق الأوتوماتيكي بنجاح! 🎨");
         }
 
         function applyCustomGradient() {
@@ -1031,9 +1045,11 @@
             document.getElementById('confirm-modal').classList.remove('active');
             if (isConfirmed && pendingDeleteIndex !== null) {
                 userData.expenses.splice(pendingDeleteIndex, 1);
-                await db.collection("users").doc(currentUser).update({ expenses: userData.expenses });
+                if (currentUser !== adminCredentials.username) {
+                    await db.collection("users").doc(currentUser).update({ expenses: userData.expenses });
+                }
                 loadUserData();
-                showAlert("تم مسح المصروف أونلاين بنجاح!");
+                showAlert("تم مسح المصروف بنجاح!");
             }
             pendingDeleteIndex = null;
         }
