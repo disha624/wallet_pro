@@ -427,7 +427,7 @@
     <script>
         const INVITATION_KEY = "VIP2026";
         const EMAILJS_SERVICE_ID = "service_3dastke";
-        const EMAILJS_TEMPLATE_ID = "template_94qjkzl"; // تم تحديثه ليتطابق مع صورتك الصحيحة
+        const EMAILJS_TEMPLATE_ID = "template_94qjkzl"; // تم تصحيح الـ Template ID ليتطابق مع لوحة التحكم[cite: 5]
 
         // Hardcoded Admin Default Credentials (Can be updated dynamically from Admin Panel)
         let adminCredentials = {
@@ -558,7 +558,7 @@
                 toggleAuthMode('otp');
             } catch (err) {
                 console.error("EmailJS Error:", err);
-                let errorMsg = err.text || err.message || JSON.stringify(err);
+                let errorMsg = (err && err.text) ? err.text : (err.message || JSON.stringify(err));
                 showAlert("خطأ في إرسال البريد: " + errorMsg);
             }
         }
@@ -601,7 +601,7 @@
                 toggleAuthMode('login');
             } catch(err) {
                 console.error("EmailJS Error:", err);
-                let errorMsg = err.text || err.message || JSON.stringify(err);
+                let errorMsg = (err && err.text) ? err.text : (err.message || JSON.stringify(err));
                 showAlert("خطأ في إرسال الإيميل: " + errorMsg);
             }
         }
