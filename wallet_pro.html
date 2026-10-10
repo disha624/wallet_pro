@@ -1,28 +1,3 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyDI0vCuCtDP0TWV1SVNEzfjNNcOEDWr10",
-  authDomain: "walletpro-b8c4e.firebaseapp.com",
-  projectId: "walletpro-b8c4e",
-  storageBucket: "walletpro-b8c4e.firebasestorage.app",
-  messagingSenderId: "198862499644",
-  appId: "1:198862499644:web:27e2565d81db35f3bcb839",
-  measurementId: "G-R0FRZQ1EH6"
-};
-```[cite: 7]
-
----
-
-### ⚠️ خطوة أخيرة ومهمة جداً قبل إعطائك الكود الكامل:
-عشان قاعدة البيانات تشتغل معاك أونلاين وتقدر تخزن وتسترجع المصروفات والحسابات، فاضل تفعيل **Firestore Database**:
-1. اضغط على الزر الأسود **`Continue to console`** بأسفل الصفحة في Firebase.
-2. من القائمة الجانبية اليسرى، اختر **`Firestore Database`** (أو من قائمة `Databases & Storage`).
-3. اضغط على **`Create database`**.
-4. اختر **`Start in test mode`** واضغط **`Next`** ثم **`Enable`**.
-
----
-
-إليك **الكود الكامل الشامل والمعتمد وتطبيق "بوصلتك المالية" كاملاً** مدمجاً فيه بيانات الـ Firebase الخاصة بمشروعك (`walletpro-b8c4e`)[cite: 7] + كود الدعوة السري (`VIP2026`) + نظام إرسال التفاصيل عبر الإيميل/الواتساب + **جميع التصاميم المودرن السابقة بالتفصيل** (الألوان والتوهج، السايد بار، دعم الموبايل والإنتر والحفظ التلقائي):
-
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -33,9 +8,6 @@ const firebaseConfig = {
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
-    <!-- EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -391,10 +363,8 @@ const firebaseConfig = {
     </div>
 
     <script>
-        // 🔒 كود الدعوة السري
         const INVITATION_KEY = "VIP2026";
 
-        // 🌐 ربط مشروع Firebase walletpro الخاص بك
         const firebaseConfig = {
             apiKey: "AIzaSyDI0vCuCtDP0TWV1SVNEzfjNNcOEDWr10",
             authDomain: "walletpro-b8c4e.firebaseapp.com",
@@ -431,7 +401,7 @@ const firebaseConfig = {
                 catClassMap: { 'فواتير': 'cat-bills', 'أكل وشرب': 'cat-food', 'مصروفات دراسية': 'cat-study', 'مواصلات': 'cat-trans', 'خروجات ومصروف': 'cat-fun' },
                 catNames: { 'فواتير': 'فواتير', 'أكل وشرب': 'أكل وشرب', 'مصروفات دراسية': 'مصروفات دراسية', 'مواصلات': 'مواصلات', 'خروجات ومصروف': 'خروجات ومصروف' },
                 catDropdowns: { 'فواتير': '💡 فواتير (كهرباء، مياه، غاز...)', 'أكل وشرب': '🍔 أكل وشرب (لحوم، بقالة...)', 'مصروفات دراسية': '📚 مصروفات دراسية (طباعة، كتب...)', 'مواصلات': '🚗 مواصلات (تاكسي، بنزين...)', 'خروجات ومصروف': '🎉 خروجات ومصروف شخصي' },
-                subCats: { 'كهرباء ⚡': 'كهرباء ⚡', 'مياه 💧': 'مياه 💧', 'غاز 🔥': 'غاز 🔥', 'إنترنت 🌐': 'إنترنت 🌐', 'تليفون أرضي 📞': 'تليفون أرضي 📞', 'فراخ ولحوم 🍗': 'فراخ ولحوم 🍗', 'خضروات وفواكه 🍎': 'خضروات وفواكه 🍎', 'بقالة ومجففات 🛒': 'بقالة ومجففات 🛒', 'وجبات جاهزة 🍕': 'وجبات جاهزة 🍕', 'طباعة ورق ومذكرات 📄': 'طباعة ورق ومذكرات 📄', 'كتب ومراجع 📚': 'كتب ومراجع 📚', 'أدوات مكتبية ✏️': 'أدوات مكتبية ✏️', 'كورسات واشتراكات 🎓': 'كورسات واشتراكات 🎓', 'تاكسي وأوبر 🚕': 'تاكسي وأوبر 🚕', 'مواصلات عامة ومترو 🚌': 'مواصلات عامة ومترو 🚌', 'بنزين وصيانة ⛽': 'بنزين وصيانة ⛽', 'فسح وسينما 🎬': 'فسح وسينما 🎬', 'ملابس وعناية 👕': 'ملابس وعناية 👕', 'شحن ورصيد 📱': 'شحن ورصيد 📱', 'هدايا وطوارئ 🎁': 'هدايا وطوارئ 🎁' }
+                subCats: { 'كهرباء ⚡': 'كهرباء ⚡', 'مياه 💧': 'مياه 💧', 'غاز 🔥': 'غاز 🔥', 'إنترنت 🌐': 'إنترنت 🌐', 'تليفون أرضي 📞': 'تليفون أرضي 📞', 'فراخ ولحوم 🍗': 'فراخ ولحوم 🍗', 'خضروات وفواكه 🍎': 'خضروات وفواكه 🍎', 'بقالة ومجففات 🛒': 'بقالة ومجففات 🛒', 'وجبات جاهزة 🍕': 'وجبات جاهزة 🍕', 'طباعة ورق ومذكرات 📄': 'طباعة ورق ومذكرات 📄', 'كتب ومراجع 📚': 'كتب ومراجع 📚', 'أدوات مكتبية ✏️': 'أدوات مكتبية ✏️', 'كورسات وااشتراكات 🎓': 'كورسات وااشتراكات 🎓', 'تاكسي وأوبر 🚕': 'تاكسي وأوبر 🚕', 'مواصلات عامة ومترو 🚌': 'مواصلات عامة ومترو 🚌', 'بنزين وصيانة ⛽': 'بنزين وصيانة ⛽', 'فسح وسينما 🎬': 'فسح وسينما 🎬', 'ملابس وعناية 👕': 'ملابس وعناية 👕', 'شحن ورصيد 📱': 'شحن ورصيد 📱', 'هدايا وطوارئ 🎁': 'هدايا وطوارئ 🎁' }
             },
             en: {
                 appTitle: "Financial Compass | Cloud Control Center", sideTitle: "Financial Compass 📊", navHome: "Home Dashboard", navCats: "Categories & Lists", navSettings: "Settings & Colors", navLogout: "Logout",
@@ -446,14 +416,14 @@ const firebaseConfig = {
                 catClassMap: { 'فواتير': 'cat-bills', 'أكل وشرب': 'cat-food', 'مصروفات دراسية': 'cat-study', 'مواصلات': 'cat-trans', 'خروجات ومصروف': 'cat-fun' },
                 catNames: { 'فواتير': 'Bills & Utilities', 'أكل وشرب': 'Food & Groceries', 'مصروفات دراسية': 'Education & Studies', 'مواصلات': 'Transportation & Fuel', 'خروجات ومصروف': 'Outings & Personal' },
                 catDropdowns: { 'فواتير': '💡 Bills (Electricity, Water, Internet...)', 'أكل وشرب': '🍔 Food & Groceries', 'مصروفات دراسية': '📚 Education & Studies', 'مواصلات': '🚗 Transportation & Fuel', 'خروجات ومصروف': '🎉 Outings & Personal Expenses' },
-                subCats: { 'كهرباء ⚡': 'Electricity ⚡', 'مياه 💧': 'Water 💧', 'غاز 🔥': 'Gas 🔥', 'إنترنت 🌐': 'Internet 🌐', 'تليفون أرضي 📞': 'Landline 📞', 'فراخ ولحوم 🍗': 'Meat & Poultry 🍗', 'خضروات وفواكه 🍎': 'Fruits & Vegetables 🍎', 'بقالة ومجففات 🛒': 'Groceries 🛒', 'وجبات جاهزة 🍕': 'Fast Food 🍕', 'طباعة ورق ومذكرات 📄': 'Printing & Papers 📄', 'كتب ومراجع 📚': 'Books & Manuals 📚', 'أدوات مكتبية ✏️': 'Stationery ✏️', 'كورسات واشتراكات 🎓': 'Courses & Fees 🎓', 'تاكسي وأوبر 🚕': 'Taxi & Uber 🚕', 'مواصلات عامة ومترو 🚌': 'Public Transport 🚌', 'بنزين وصيانة ⛽': 'Gasoline & Maintenance ⛽', 'فسح وسينما 🎬': 'Cinema & Entertainment 🎬', 'ملابس وعناية 👕': 'Clothes & Care 👕', 'شحن ورصيد 📱': 'Mobile Recharge 📱', 'هدايا وطوارئ 🎁': 'Gifts & Emergency 🎁' }
+                subCats: { 'كهرباء ⚡': 'Electricity ⚡', 'مياه 💧': 'Water 💧', 'غاز 🔥': 'Gas 🔥', 'إنترنت 🌐': 'Internet 🌐', 'تليفون أرضي 📞': 'Landline 📞', 'فراخ ولحوم 🍗': 'Meat & Poultry 🍗', 'خضروات وفواكه 🍎': 'Fruits & Vegetables 🍎', 'بقالة ومجففات 🛒': 'Groceries 🛒', 'وجبات جاهزة 🍕': 'Fast Food 🍕', 'طباعة ورق ومذكرات 📄': 'Printing & Papers 📄', 'كتب ومراجع 📚': 'Books & Manuals 📚', 'أدوات مكتبية ✏️': 'Stationery ✏️', 'كورسات وااشتراكات 🎓': 'Courses & Fees 🎓', 'تاكسي وأوبر 🚕': 'Taxi & Uber 🚕', 'مواصلات عامة ومترو 🚌': 'Public Transport 🚌', 'بنزين وصيانة ⛽': 'Gasoline & Maintenance ⛽', 'فسح وسينما 🎬': 'Cinema & Entertainment 🎬', 'ملابس وعناية 👕': 'Clothes & Care 👕', 'شحن ورصيد 📱': 'Mobile Recharge 📱', 'هدايا وطوارئ 🎁': 'Gifts & Emergency 🎁' }
             }
         };
 
         const subCategoriesMap = {
             'فواتير': ['كهرباء ⚡', 'مياه 💧', 'غاز 🔥', 'إنترنت 🌐', 'تليفون أرضي 📞'],
             'أكل وشرب': ['فراخ ولحوم 🍗', 'خضروات وفواكه 🍎', 'بقالة ومجففات 🛒', 'وجبات جاهزة 🍕'],
-            'مصروفات دراسية': ['طباعة ورق ومذكرات 📄', 'كتب ومراجع 📚', 'أدوات مكتبية ✏️', 'كورسات واشتراكات 🎓'],
+            'مصروفات دراسية': ['طباعة ورق ومذكرات 📄', 'كتب ومراجع 📚', 'أدوات مكتبية ✏️', 'كورسات وااشتراكات 🎓'],
             'مواصلات': ['تاكسي وأوبر 🚕', 'مواصلات عامة ومترو 🚌', 'بنزين وصيانة ⛽'],
             'خروجات ومصروف': ['فسح وسينما 🎬', 'ملابس وعناية 👕', 'شحن ورصيد 📱', 'هدايا وطوارئ 🎁']
         };
@@ -505,7 +475,6 @@ const firebaseConfig = {
                 userData = { password: pass, email: email, phone: phone, salary: 6000, expenses: [] };
                 await db.collection("users").doc(user).set(userData);
 
-                // فتح الواتساب لإرسال تذكير مباشر باليوزر والباسورد للعميل
                 let waMsg = encodeURIComponent(`مرحباً بك في بوصلتك المالية 💰\nبيانات حسابك السحابي:\nاليوزر: ${user}\nالباسورد: ${pass}\nالرابط: ${window.location.href}`);
                 window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${waMsg}`, '_blank');
 
