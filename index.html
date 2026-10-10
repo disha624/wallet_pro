@@ -56,15 +56,23 @@
             width: 100%; max-width: 420px; text-align: center; border: 1px solid rgba(255,255,255,0.3);
         }
         .auth-card h2 { color: #4f46e5; margin-bottom: 20px; font-weight: 900; }
-        .auth-card input {
+        .auth-card input, .auth-card select {
             width: 100%; padding: 12px 16px; margin-bottom: 14px;
-            border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px;
+            border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; background: #fff;
         }
         .auth-card button {
             background: linear-gradient(135deg, #4f46e5, #6366f1); color: white; border: none; padding: 14px;
             width: 100%; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s;
         }
         .switch-auth { margin-top: 15px; font-size: 13px; color: #4f46e5; cursor: pointer; font-weight: bold; }
+
+        .lang-btn-group { display: flex; gap: 15px; margin-top: 20px; }
+        .lang-btn { flex: 1; padding: 15px; border-radius: 16px; border: none; font-weight: 800; font-size: 16px; cursor: pointer; transition: transform 0.2s; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .lang-btn:hover { transform: translateY(-3px); }
+
+        .role-btn-group { display: flex; gap: 15px; margin-top: 20px; }
+        .role-card { flex: 1; padding: 20px; border-radius: 18px; border: 2px solid var(--border-color); background: var(--panel-bg); cursor: pointer; transition: all 0.3s; font-weight: 800; font-size: 16px; }
+        .role-card:hover { transform: translateY(-5px); border-color: #4f46e5; box-shadow: 0 10px 20px rgba(79,70,229,0.2); }
 
         #app-container { display: none; min-height: 100vh; display: flex; }
         .sidebar {
@@ -116,7 +124,7 @@
 
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 700; color: var(--subtext-color); }
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 14px;
             background: var(--panel-bg); color: var(--text-color); transition: all 0.3s;
         }
@@ -128,7 +136,6 @@
         }
         body.animations-enabled .btn:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); }
         .btn-salary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); margin-bottom: 12px; }
-        body.animations-enabled .btn-salary:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(59, 130, 246, 0.8); }
 
         .btn-delete { background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin-right: 10px; }
         html[dir="ltr"] .btn-delete { margin-right: 0; margin-left: 10px; }
@@ -145,12 +152,6 @@
 
         .category-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
         .cat-card { padding: 24px; border-radius: 20px; color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; }
-        
-        .cat-card.cat-bills:hover { box-shadow: 0 0 30px rgba(255, 65, 108, 0.8), 0 10px 25px rgba(0,0,0,0.2); transform: translateY(-6px) scale(1.02); }
-        .cat-card.cat-food:hover { box-shadow: 0 0 30px rgba(138, 43, 226, 0.8), 0 10px 25px rgba(0,0,0,0.2); transform: translateY(-6px) scale(1.02); }
-        .cat-card.cat-study:hover { box-shadow: 0 0 30px rgba(0, 198, 255, 0.8), 0 10px 25px rgba(0,0,0,0.2); transform: translateY(-6px) scale(1.02); }
-        .cat-card.cat-trans:hover { box-shadow: 0 0 30px rgba(247, 151, 30, 0.8), 0 10px 25px rgba(0,0,0,0.2); transform: translateY(-6px) scale(1.02); }
-        .cat-card.cat-fun:hover { box-shadow: 0 0 30px rgba(17, 153, 142, 0.8), 0 10px 25px rgba(0,0,0,0.2); transform: translateY(-6px) scale(1.02); }
         .cat-card h3 { font-size: 18px; margin-bottom: 12px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; }
 
         .sub-item {
@@ -164,13 +165,7 @@
         .social-bar { display: flex; justify-content: center; gap: 15px; margin-top: 20px; padding: 12px; background: rgba(255,255,255,0.2); border-radius: 16px; border: 1px solid var(--border-color); }
         .social-icon { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .social-icon.whatsapp { background: #25D366; } .social-icon.whatsapp:hover { box-shadow: 0 0 20px #25D366; transform: translateY(-4px) scale(1.1); }
-        .social-icon.facebook { background: #1877F2; } .social-icon.facebook:hover { box-shadow: 0 0 20px #1877F2; transform: translateY(-4px) scale(1.1); }
-        .social-icon.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); } .social-icon.instagram:hover { box-shadow: 0 0 20px #dc2743; transform: translateY(-4px) scale(1.1); }
-        .social-icon.telegram { background: #0088cc; } .social-icon.telegram:hover { box-shadow: 0 0 20px #0088cc; transform: translateY(-4px) scale(1.1); }
-        .social-icon.youtube { background: #FF0000; } .social-icon.youtube:hover { box-shadow: 0 0 20px #FF0000; transform: translateY(-4px) scale(1.1); }
-        .social-icon.twitter { background: #1DA1F2; } .social-icon.twitter:hover { box-shadow: 0 0 20px #1DA1F2; transform: translateY(-4px) scale(1.1); }
 
-        /* Ads Container Style */
         .ads-container { margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; text-align: center; border: 1px dashed var(--border-color); }
 
         .modal-overlay {
@@ -203,6 +198,7 @@
 </head>
 <body class="animations-enabled">
 
+    <!-- Alert Modal -->
     <div class="modal-overlay" id="alert-modal">
         <div class="custom-modal">
             <h3 id="alert-title" style="color:#4f46e5; margin-bottom:12px;">✨</h3>
@@ -211,6 +207,7 @@
         </div>
     </div>
 
+    <!-- Confirm Modal -->
     <div class="modal-overlay" id="confirm-modal">
         <div class="custom-modal">
             <h3 style="color:#ef4444; margin-bottom:12px;" id="lbl-confirm-title">🗑️</h3>
@@ -222,10 +219,20 @@
         </div>
     </div>
 
-    <!-- Login & Auth System -->
+    <!-- AUTH & SETUP CONTAINER -->
     <div id="auth-container">
+        <!-- 1. Language Selection Screen (First thing shown) -->
+        <div class="auth-card" id="step-lang-box">
+            <h2>🌍 Language / اللغة</h2>
+            <p style="font-size: 13px; color: var(--subtext-color); margin-bottom: 20px;">اختر لغة التطبيق المفضلة لديك / Select your preferred language</p>
+            <div class="lang-btn-group">
+                <button class="lang-btn" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);" onclick="selectAppLanguage('ar')">🇪🇬 العربية</button>
+                <button class="lang-btn" style="background: linear-gradient(135deg, #4f46e5, #7c3aed);" onclick="selectAppLanguage('en')">🇺🇸 English</button>
+            </div>
+        </div>
+
         <!-- Login Form -->
-        <div class="auth-card" id="login-box">
+        <div class="auth-card" id="login-box" style="display: none;">
             <h2 id="lbl-app-login-title">بوصلتك المالية 💰</h2>
             <form onsubmit="event.preventDefault(); login();">
                 <input type="text" id="login-username" placeholder="اسم المستخدم" autocomplete="username" required>
@@ -272,9 +279,35 @@
             </form>
             <div class="switch-auth" onclick="toggleAuthMode('login')">العودة لتسجيل الدخول</div>
         </div>
+
+        <!-- 2. King / Queen Selection Screen (After Login/Register) -->
+        <div class="auth-card" id="step-role-box" style="display: none;">
+            <h2 id="role-title-text">👑 اختر لقبك الملكي</h2>
+            <p style="font-size: 13px; color: var(--subtext-color); margin-bottom: 20px;" id="role-desc-text">حدد لقبك لنخاطبك به في التطبيق:</p>
+            <div class="role-btn-group">
+                <div class="role-card" onclick="selectUserRole('king')">
+                    <div style="font-size: 32px; margin-bottom: 8px;">🤴</div>
+                    <div id="role-king-label">ملك / الأمير</div>
+                </div>
+                <div class="role-card" onclick="selectUserRole('queen')">
+                    <div style="font-size: 32px; margin-bottom: 8px;">👸</div>
+                    <div id="role-queen-label">ملكة / الأميرة</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Initial Salary Setup Screen (First time login) -->
+        <div class="auth-card" id="step-salary-box" style="display: none;">
+            <h2 id="salary-setup-title">💰 إدخال الراتب الشهري</h2>
+            <p style="font-size: 13px; color: var(--subtext-color); margin-bottom: 20px;" id="salary-setup-desc">من فضلك أدخل راتبك الشهري لنبدأ إدارة ميزانيتك:</p>
+            <form onsubmit="event.preventDefault(); saveInitialSalarySetup();">
+                <input type="number" id="setup-salary-input" placeholder="مثال: 6000" required style="text-align:center; font-size:18px; font-weight:bold;">
+                <button type="submit" id="salary-setup-btn">حفظ ومتابعة إلى التطبيق 🚀</button>
+            </form>
+        </div>
     </div>
 
-    <!-- Main App -->
+    <!-- MAIN APP CONTAINER -->
     <div id="app-container" style="display: none;">
         <div class="sidebar" id="main-sidebar">
             <h2 id="lbl-side-title">بوصلتك المالية 📊</h2>
@@ -283,10 +316,9 @@
             <div class="nav-item active" id="menu-home" onclick="switchSection('home')">🏠 <span id="lbl-nav-home">الرئيسية</span></div>
             <div class="nav-item" id="menu-categories" onclick="switchSection('categories')">🎨 <span id="lbl-nav-cats">القوائم</span></div>
             <div class="nav-item" id="menu-settings" onclick="switchSection('settings')">⚙️ <span id="lbl-nav-settings">الإعدادات والألوان</span></div>
-            <!-- Admin Panel Menu Item (Visible for Admin Only) -->
+            <!-- Admin Panel Menu Item -->
             <div class="nav-item" id="menu-admin" onclick="switchSection('admin')" style="display: none; background: rgba(99, 102, 241, 0.4);">🛡️ <span>لوحة الإدارة</span></div>
             
-            <!-- Ads Banner Container in Sidebar -->
             <div class="ads-container">
                 <span style="font-size: 10px; color: #aaa; display: block; margin-bottom: 4px;">إعلان مخصص</span>
                 <div id="adSpace" style="font-size: 11px; color: #cbd5e1;">مساحة إعلانية (AdSense / Adsterra)</div>
@@ -304,6 +336,7 @@
                 </div>
             </div>
 
+            <!-- HOME SECTION -->
             <div id="sec-home" class="section-view active">
                 <div class="cards-grid">
                     <div class="card salary"><h3 id="lbl-card-sal">الراتب الإجمالي</h3><div class="value" id="sal-display">0 ج.م</div></div>
@@ -313,12 +346,7 @@
 
                 <div class="grid-section">
                     <div class="panel">
-                        <h2 id="lbl-manage-title">إدارة الراتب والقوائم المتعددة</h2>
-                        <div class="form-group"><label id="lbl-sal-input">الراتب الشهري الإجمالي:</label><input type="number" id="salary-input" placeholder="6000"></div>
-                        <button class="btn btn-salary" onclick="updateSalary()" id="btn-save-sal">حفظ وتحديث الراتب أونلاين</button>
-                        
-                        <hr style="border:0; border-top:1px solid var(--border-color); margin:15px 0;">
-
+                        <h2 id="lbl-manage-title">إضافة المصروفات والقوائم</h2>
                         <div class="form-group"><label id="lbl-cat-select">اختر القائمة الرئيسية:</label><select id="category-select" onchange="updateSubCategories()"></select></div>
                         <div class="form-group"><label id="lbl-subcat-select">اختر البند الفرعي:</label><select id="subcategory-select"></select></div>
                         <div class="form-group"><label id="lbl-title-input">اسم المصروف / البيان (اختياري):</label><input type="text" id="title-input" placeholder="..."></div>
@@ -335,11 +363,6 @@
                             <label style="font-size:11px; font-weight:bold;" id="lbl-social-title">💬 تواصل معي مباشرة:</label>
                             <div class="social-bar">
                                 <a href="https://wa.me/201044002880" target="_blank" class="social-icon whatsapp" title="واتساب"><i class="fab fa-whatsapp"></i></a>
-                                <a href="javascript:void(0)" class="social-icon facebook" title="فيسبوك"><i class="fab fa-facebook-f"></i></a>
-                                <a href="javascript:void(0)" class="social-icon instagram" title="انستجرام"><i class="fab fa-instagram"></i></a>
-                                <a href="javascript:void(0)" class="social-icon telegram" title="تلجرام"><i class="fab fa-telegram-plane"></i></a>
-                                <a href="javascript:void(0)" class="social-icon youtube" title="يوتيوب"><i class="fab fa-youtube"></i></a>
-                                <a href="javascript:void(0)" class="social-icon twitter" title="تويتر"><i class="fab fa-twitter"></i></a>
                             </div>
                         </div>
                     </div>
@@ -351,6 +374,7 @@
                 </div>
             </div>
 
+            <!-- CATEGORIES SECTION -->
             <div id="sec-categories" class="section-view">
                 <div class="panel">
                     <h2 id="lbl-cats-view-title">تصنيفات الميزانية التفاعلية</h2>
@@ -364,16 +388,71 @@
                 </div>
             </div>
 
-            <!-- Admin Panel View -->
+            <!-- ADMIN PANEL VIEW -->
             <div id="sec-admin" class="section-view">
-                <div class="panel" style="max-width: 700px; margin: 0 auto;">
+                <div class="panel" style="max-width: 800px; margin: 0 auto;">
                     <h2 style="color: #4f46e5; margin-bottom: 15px;">🛡️ لوحة تحكم الأدمن الخاصة</h2>
-                    <div class="form-group">
-                        <label>تحديث يوزر وباسورد الأدمن (إبطال القديم نهائياً):</label>
-                        <input type="text" id="admin-new-user" placeholder="اسم المستخدم الجديد للأدمن" style="margin-bottom:10px;">
-                        <input type="password" id="admin-new-pass" placeholder="كلمة المرور الجديدة" style="margin-bottom:10px;">
-                        <button class="btn" onclick="updateAdminCredentials()">تحديث بيانات الأدمن الآن</button>
+                    
+                    <!-- Admin Sub-Navigation Buttons / Sections -->
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px;">
+                        <button class="btn btn-salary" onclick="showAdminSubTab('credentials')">🔑 تغيير بيانات الأدمن</button>
+                        <button class="btn btn-salary" onclick="showAdminSubTab('salary-sounds')">🎵 أصوات ورسائل الرواتب</button>
+                        <button class="btn btn-salary" onclick="showAdminSubTab('users-manage')">👥 إدارة المستخدمين والحظر</button>
+                        <button class="btn btn-salary" onclick="showAdminSubTab('broadcast')">📢 لوحة الإعلانات العامة</button>
                     </div>
+
+                    <!-- 1. Credentials Tab -->
+                    <div id="admin-tab-credentials" class="admin-sub-tab" style="display:none;">
+                        <h3 style="font-size:15px; margin-bottom:12px;">تحديث يوزر وباسورد الأدمن (إبطال القديم نهائياً):</h3>
+                        <div class="form-group">
+                            <input type="text" id="admin-new-user" placeholder="اسم المستخدم الجديد للأدمن" style="margin-bottom:10px;">
+                            <input type="password" id="admin-new-pass" placeholder="كلمة المرور الجديدة" style="margin-bottom:10px;">
+                            <button class="btn" onclick="updateAdminCredentials()">تحديث بيانات الأدمن الآن</button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Salary Sounds & Messages Tab -->
+                    <div id="admin-tab-salary-sounds" class="admin-sub-tab" style="display:none;">
+                        <h3 style="font-size:15px; margin-bottom:12px;">🎵 إضافة وتخصيص أصوات ورسائل الرواتب:</h3>
+                        <div class="form-group">
+                            <label>الحد الأدنى للراتب (من):</label>
+                            <input type="number" id="sound-min-sal" placeholder="مثال: 3000">
+                        </div>
+                        <div class="form-group">
+                            <label>الحد الأقصى للراتب (إلى):</label>
+                            <input type="number" id="sound-max-sal" placeholder="مثال: 5000">
+                        </div>
+                        <div class="form-group">
+                            <label>رفع ملف الصوت (MP3 / WAV):</label>
+                            <input type="file" id="sound-file-input" accept="audio/*">
+                        </div>
+                        <div class="form-group">
+                            <label>الرسالة النصية المصاحبة للصوت:</label>
+                            <textarea id="sound-msg-text" placeholder="مثال: أهلاً بيك يا ملك، معاك أخويا المدرع..." rows="3"></textarea>
+                        </div>
+                        <button class="btn" onclick="saveSalarySoundRule()">حفظ قاعدة الصوت والرسالة الجديدة 💾</button>
+                        
+                        <div style="margin-top: 20px;">
+                            <h4 style="font-size:14px; margin-bottom:8px;">قواعد الأصوات المضافة مسبقاً:</h4>
+                            <div id="saved-sounds-list" style="font-size:13px; color:var(--subtext-color);">جاري التحميل...</div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Users Management & Ban Tab -->
+                    <div id="admin-tab-users-manage" class="admin-sub-tab" style="display:none;">
+                        <h3 style="font-size:15px; margin-bottom:12px;">👥 إدارة حسابات المستخدمين:</h3>
+                        <div id="admin-users-list-container" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+
+                    <!-- 4. Broadcast Announcement Tab -->
+                    <div id="admin-tab-broadcast" class="admin-sub-tab" style="display:none;">
+                        <h3 style="font-size:15px; margin-bottom:12px;">📢 إرسال إعلان عام لجميع المستخدمين:</h3>
+                        <div class="form-group">
+                            <textarea id="broadcast-msg-input" placeholder="اكتب نص الإعلان الذي سيظهر لجميع المستخدمين فور دخولهم..." rows="4"></textarea>
+                            <button class="btn" onclick="publishBroadcast()">نشر الإعلان الآن 🚀</button>
+                        </div>
+                    </div>
+
                     <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px;">
                         <h3 style="font-size:14px; margin-bottom:8px;">إحصائيات النظام:</h3>
                         <p id="admin-stats-info" style="font-size: 13px; color: var(--subtext-color);">جاري جلب إحصائيات الحسابات...</p>
@@ -381,10 +460,22 @@
                 </div>
             </div>
 
+            <!-- SETTINGS SECTION -->
             <div id="sec-settings" class="section-view">
                 <div class="panel" style="max-width: 700px; margin: 0 auto;">
                     <h2 id="lbl-settings-heading">⚙️ لوحة التحكم بالألوان واللغة والعمق (Theme Control)</h2>
-                    <div class="form-group" style="margin-top: 20px;">
+                    
+                    <!-- Salary Update Section (Normal User) -->
+                    <div style="border: 2px dashed var(--border-color); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
+                        <h3 style="font-size: 15px; margin-bottom: 12px; color: #4f46e5;" id="lbl-update-sal-title">💰 تحديث الراتب الشهري (Salary Update)</h3>
+                        <div class="form-group">
+                            <label id="lbl-new-sal-label">الراتب الجديد:</label>
+                            <input type="number" id="user-update-salary-input" placeholder="6000">
+                        </div>
+                        <button class="btn btn-salary" onclick="updateUserSalaryFromSettings()" id="btn-update-sal-action">تحديث الراتب وتشغيل التنبيه 🚀</button>
+                    </div>
+
+                    <div class="form-group">
                         <label id="lbl-lang-opt">🌐 لغة الواجهة الكاملة (Full Language):</label>
                         <select id="lang-select" onchange="changeLanguage(this.value)">
                             <option value="ar">العربية (Arabic)</option>
@@ -403,33 +494,20 @@
                         </div>
                         <button class="btn" style="margin-top:12px; background:linear-gradient(135deg, #1565c0, #1e88e5);" onclick="syncSidebarWithBG()" id="btn-sync-bg">🔄 تنسيق أوتوماتيكي مع لون خلفية الموقع</button>
                     </div>
-                    <div style="border: 2px dashed var(--border-color); padding: 20px; border-radius: 16px; margin: 20px 0;">
-                        <h3 style="font-size: 15px; margin-bottom: 12px; color: #4f46e5;" id="lbl-bg-colors-title">🎨 تخصيص ألوان خلفية الموقع بالكامل (Background Gradients)</h3>
-                        <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
-                            <div style="flex:1; min-width: 140px;"><label style="font-size:12px; font-weight:bold;" id="lbl-color1">اللون الأول (Top Color):</label><input type="color" id="bg-color1" value="#f0f4f8" style="height:40px; cursor:pointer;" onchange="applyCustomGradient()"></div>
-                            <div style="flex:1; min-width: 140px;"><label style="font-size:12px; font-weight:bold;" id="lbl-color2">اللون الثاني (Bottom Color):</label><input type="color" id="bg-color2" value="#e2e8f0" style="height:40px; cursor:pointer;" onchange="applyCustomGradient()"></div>
-                        </div>
-                        <label style="font-size:12px; font-weight:bold;" id="lbl-presets">تدرجات زاهية جاهزة بضغطة زر (Presets):</label>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
-                            <button class="preset-btn" style="background: linear-gradient(135deg, #00c6ff, #0072ff);" onclick="setPresetBG('linear-gradient(135deg, #00c6ff, #0072ff)')">Ocean Blue</button>
-                            <button class="preset-btn" style="background: linear-gradient(135deg, #ff7e5f, #feb47b);" onclick="setPresetBG('linear-gradient(135deg, #ff7e5f, #feb47b)')">Sunset Glow</button>
-                            <button class="preset-btn" style="background: linear-gradient(135deg, #11998e, #38ef7d);" onclick="setPresetBG('linear-gradient(135deg, #11998e, #38ef7d)')">Emerald Mint</button>
-                            <button class="preset-btn" style="background: linear-gradient(135deg, #8a2be2, #4a00e0);" onclick="setPresetBG('linear-gradient(135deg, #8a2be2, #4a00e0)')">Cyber Purple</button>
-                            <button class="preset-btn" style="background: #f0f4f8; color:#333; border:1px solid #ccc;" onclick="setPresetBG('linear-gradient(135deg, #f0f4f8, #e2e8f0)')">Default Light</button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 
+    <!-- Hidden Audio Player Element -->
+    <audio id="custom-salary-audio" style="display:none;"></audio>
+
     <script>
         const INVITATION_KEY = "VIP2026";
         const EMAILJS_SERVICE_ID = "service_3dastke";
-        const EMAILJS_TEMPLATE_ID = "template_94qjkzl"; // تم تصحيح الـ Template ID ليتطابق مع لوحة التحكم[cite: 5]
+        const EMAILJS_TEMPLATE_ID = "template_94qjkzl";
 
-        // Hardcoded Admin Default Credentials (Can be updated dynamically from Admin Panel)
         let adminCredentials = {
             username: localStorage.getItem('admin_user') || 'admin',
             password: localStorage.getItem('admin_pass') || 'admin123'
@@ -448,10 +526,10 @@
         const db = firebase.firestore();
 
         let currentUser = localStorage.getItem('logged_user');
-        let userData = { salary: 6000, expenses: [] };
+        let userData = { salary: 6000, expenses: [], role: 'king', lang: 'ar' };
         let expenseChart = null;
         let pendingDeleteIndex = null;
-        let currentLang = localStorage.getItem('app_lang') || 'ar';
+        let currentLang = localStorage.getItem('app_lang') || null; // Will show language select first if not set
         
         let generatedOTP = null;
         let tempRegData = null;
@@ -460,33 +538,39 @@
             ar: {
                 appTitle: "بوصلتك المالية | مركز إدارة المصروفات السحابي",
                 sideTitle: "بوصلتك المالية 📊", navHome: "الرئيسية", navCats: "القوائم والتصنيفات", navSettings: "الإعدادات والألوان", navLogout: "تسجيل الخروج",
-                cardSal: "الراتب الإجمالي لشهر", cardExp: "إجمالي المصروفات", cardRem: "الرصيد المتاح", manageTitle: "إدارة الراتب والقوائم المتعددة",
-                salInputLabel: "الراتب الشهري الإجمالي:", btnSaveSal: "حفظ وتحديث الراتب أونلاين", catSelectLabel: "اختر القائمة الرئيسية:", subCatSelectLabel: "اختر البند الفرعي الدقيق:",
+                cardSal: "الراتب الإجمالي لشهر", cardExp: "إجمالي المصروفات", cardRem: "الرصيد المتاح", manageTitle: "إضافة المصروفات والقوائم",
+                catSelectLabel: "اختر القائمة الرئيسية:", subCatSelectLabel: "اختر البند الفرعي الدقيق:",
                 titleInputLabel: "اسم المصروف / البيان (اختياري):", amountInputLabel: "المبلغ (جنيه):", btnAddExp: "توزيع وإضافة المصروف أونلاين", chartTitle: "عجلة توزيع المصاريف التفاعلية 🎡",
                 transHistory: "سجل المعاملات اليومية أونلاين", catsViewTitle: "تصنيفات وقوائم الميزانية التفاعلية", catsDesc: "👇 اضغط على أي كارت ملون لاستعراض التفاصيل الدقيقة ومراجعة المعاملات:",
                 monthLabel: "📅 عرض شهر:", settingsHeading: "⚙️ لوحة التحكم بالألوان واللغة والعمق (Theme Control)", langOpt: "🌐 لغة الواجهة الكاملة (Full Language):",
                 darkOpt: "🌙 نمط الألوان (Dark / Light Mode):", btnDarkToggle: "تغيير النمط (Dark / Light)", sidebarTitle: "🎨 تخصيص لون القائمة الجانبية (Sidebar Customization)",
-                syncBgBtn: "🔄 تنسيق أوتوماتيكي مع لون خلفية الموقع", bgColorsTitle: "🎨 تخصيص ألوان خلفية الموقع بالكامل (Background Gradients)", color1Label: "اللون الأول (Top Color):",
-                color2Label: "اللون الثاني (Bottom Color):", presetsLabel: "تدرجات زاهية جاهزة بضغطة زر (Presets):", socialTitle: "💬 تواصل معي مباشرة:", welcome: "أهلاً بك",
+                syncBgBtn: "🔄 تنسيق أوتوماتيكي مع لون خلفية الموقع", socialTitle: "💬 تواصل معي مباشرة:", welcome: "أهلاً بك",
                 confirmTitle: "تأكيد عملية الحذف 🗑️", confirmMsg: "هل أنت متأكد من مسح هذا المصروف وإعادته للرصيد؟", btnCancel: "إلغاء", btnDelete: "مسح 🗑️",
                 loginTitle: "بوصلتك المالية 💰", regTitle: "إنشاء الحساب ✨", btnLoginAction: "تسجيل الدخول", btnRegAction: "إرسال كود التحقق وتأكيد الحساب",
                 switchToReg: "انشاء الحساب", switchToLogin: "لديك حساب بالفعل؟ تسجيل الدخول", currency: "ج.م",
-                catClassMap: { 'فواتير': 'cat-bills', 'أكل وشرب': 'cat-food', 'مصروفات دراسية': 'cat-study', 'مواصلات': 'cat-trans', 'خروجات ومصروف': 'cat-fun' },
+                roleTitle: "👑 اختر لقبك الملكي", roleDesc: "حدد لقبك لنخاطبك به في التطبيق:",
+                kingLabel: "ملك / الأمير", queenLabel: "ملكة / الأميرة",
+                salarySetupTitle: "💰 إدخال الراتب الشهري", salarySetupDesc: "من فضلك أدخل راتبك الشهري لنبدأ إدارة ميزانيتك:", salarySetupBtn: "حفظ ومتابعة إلى التطبيق 🚀",
+                updateSalTitle: "💰 تحديث الراتب الشهري (Salary Update)", newSalLabel: "الراتب الجديد:", btnUpdateSalAction: "تحديث الراتب وتشغيل التنبيه 🚀",
                 catNames: { 'فواتير': 'فواتير', 'أكل وشرب': 'أكل وشرب', 'مصروفات دراسية': 'مصروفات دراسية', 'مواصلات': 'مواصلات', 'خروجات ومصروف': 'خروجات ومصروف' },
                 catDropdowns: { 'فواتير': '💡 فواتير (كهرباء، مياه، غاز...)', 'أكل وشرب': '🍔 أكل وشرب (لحوم، بقالة...)', 'مصروفات دراسية': '📚 مصروفات دراسية (طباعة، كتب...)', 'مواصلات': '🚗 مواصلات (تاكسي، بنزين...)', 'خروجات ومصروف': '🎉 خروجات ومصروف شخصي' },
                 subCats: { 'كهرباء ⚡': 'كهرباء ⚡', 'مياه 💧': 'مياه 💧', 'غاز 🔥': 'غاز 🔥', 'إنترنت 🌐': 'إنترنت 🌐', 'تليفون أرضي 📞': 'تليفون أرضي 📞', 'فراخ ولحوم 🍗': 'فراخ ولحوم 🍗', 'خضروات وفواكه 🍎': 'خضروات وفواكه 🍎', 'بقالة ومجففات 🛒': 'بقالة ومجففات 🛒', 'وجبات جاهزة 🍕': 'وجبات جاهزة 🍕', 'طباعة ورق ومذكرات 📄': 'طباعة ورق ومذكرات 📄', 'كتب ومراجع 📚': 'كتب ومراجع 📚', 'أدوات مكتبية ✏️': 'أدوات مكتبية ✏️', 'كورسات وااشتراكات 🎓': 'كورسات وااشتراكات 🎓', 'تاكسي وأوبر 🚕': 'تاكسي وأوبر 🚕', 'مواصلات عامة ومترو 🚌': 'مواصلات عامة ومترو 🚌', 'بنزين وصيانة ⛽': 'بنزين وصيانة ⛽', 'فسح وسينما 🎬': 'فسح وسينما 🎬', 'ملابس وعناية 👕': 'ملابس وعناية 👕', 'شحن ورصيد 📱': 'شحن ورصيد 📱', 'هدايا وطوارئ 🎁': 'هدايا وطوارئ 🎁' }
             },
             en: {
                 appTitle: "Financial Compass | Cloud Control Center", sideTitle: "Financial Compass 📊", navHome: "Home Dashboard", navCats: "Categories & Lists", navSettings: "Settings & Colors", navLogout: "Logout",
-                cardSal: "Total Monthly Income", cardExp: "Total Expenses", cardRem: "Available Balance", manageTitle: "Manage Income & Expenses", salInputLabel: "Total Monthly Salary:", btnSaveSal: "Save Salary Cloud",
-                catSelectLabel: "Select Main Category:", subCatSelectLabel: "Select Sub-Category Item:", titleInputLabel: "Expense Description (Optional):", amountInputLabel: "Amount:", btnAddExp: "Add Expense Cloud",
+                cardSal: "Total Monthly Income", cardExp: "Total Expenses", cardRem: "Available Balance", manageTitle: "Manage Expenses & Lists",
+                catSelectLabel: "Select Main Category:", subCatSelectLabel: "Select Sub-Category Item:",
+                titleInputLabel: "Expense Description (Optional):", amountInputLabel: "Amount:", btnAddExp: "Add Expense Cloud",
                 chartTitle: "Interactive Spending Wheel 🎡", transHistory: "Cloud Transaction Log", catsViewTitle: "Interactive Budget Categories", catsDesc: "👇 Click any category card to view detailed breakdown & delete items:",
                 monthLabel: "📅 Select Month:", settingsHeading: "⚙️ Theme, Background & Language Control", langOpt: "🌐 Full Interface Language:", darkOpt: "🌙 Color Theme (Dark / Light Mode):", btnDarkToggle: "Toggle Theme (Dark / Light)",
-                sidebarTitle: "🎨 Sidebar Theme Customization", syncBgBtn: "🔄 Sync Sidebar Color with Main Background", bgColorsTitle: "🎨 Custom Background Gradients & Colors", color1Label: "Top Gradient Color:", color2Label: "Bottom Gradient Color:",
-                presetsLabel: "Preset Vibe Gradients:", socialTitle: "💬 Connect Directly With Me:", welcome: "Welcome", confirmTitle: "Confirm Deletion 🗑️", confirmMsg: "Are you sure you want to delete this expense and restore balance?",
-                btnCancel: "Cancel", btnDelete: "Delete 🗑️", loginTitle: "Financial Compass 💰", regTitle: "Create Account ✨", btnLoginAction: "Login to Dashboard", btnRegAction: "Send OTP & Register",
+                sidebarTitle: "🎨 Sidebar Theme Customization", syncBgBtn: "🔄 Sync Sidebar Color with Main Background", socialTitle: "💬 Connect Directly With Me:", welcome: "Welcome",
+                confirmTitle: "Confirm Deletion 🗑️", confirmMsg: "Are you sure you want to delete this expense and restore balance?", btnCancel: "Cancel", btnDelete: "Delete 🗑️",
+                loginTitle: "Financial Compass 💰", regTitle: "Create Account ✨", btnLoginAction: "Login to Dashboard", btnRegAction: "Send OTP & Register",
                 switchToReg: "Sign up", switchToLogin: "Already have an account? Login", currency: "EGP",
-                catClassMap: { 'فواتير': 'cat-bills', 'أكل وشرب': 'cat-food', 'مصروفات دراسية': 'cat-study', 'مواصلات': 'cat-trans', 'خروجات ومصروف': 'cat-fun' },
+                roleTitle: "👑 Choose Your Royal Title", roleDesc: "Select your title to address you in the app:",
+                kingLabel: "King / Prince", queenLabel: "Queen / Princess",
+                salarySetupTitle: "💰 Enter Monthly Salary", salarySetupDesc: "Please enter your monthly salary to manage your budget:", salarySetupBtn: "Save & Proceed 🚀",
+                updateSalTitle: "💰 Update Monthly Salary", newSalLabel: "New Salary:", btnUpdateSalAction: "Update Salary & Play Alert 🚀",
                 catNames: { 'فواتير': 'Bills & Utilities', 'أكل وشرب': 'Food & Groceries', 'مصروفات دراسية': 'Education & Studies', 'مواصلات': 'Transportation & Fuel', 'خروجات ومصروف': 'Outings & Personal' },
                 catDropdowns: { 'فواتير': '💡 Bills (Electricity, Water, Internet...)', 'أكل وشرب': '🍔 Food & Groceries', 'مصروفات دراسية': '📚 Education & Studies', 'مواصلات': '🚗 Transportation & Fuel', 'خروجات ومصروف': '🎉 Outings & Personal Expenses' },
                 subCats: { 'كهرباء ⚡': 'Electricity ⚡', 'مياه 💧': 'Water 💧', 'غاز 🔥': 'Gas 🔥', 'إنترنت 🌐': 'Internet 🌐', 'تليفون أرضي 📞': 'Landline 📞', 'فراخ ولحوم 🍗': 'Meat & Poultry 🍗', 'خضروات وفواكه 🍎': 'Fruits & Vegetables 🍎', 'بقالة ومجففات 🛒': 'Groceries 🛒', 'وجبات جاهزة 🍕': 'Fast Food 🍕', 'طباعة ورق ومذكرات 📄': 'Printing & Papers 📄', 'كتب ومراجع 📚': 'Books & Manuals 📚', 'أدوات مكتبية ✏️': 'Stationery ✏️', 'كورسات وااشتراكات 🎓': 'Courses & Fees 🎓', 'تاكسي وأوبر 🚕': 'Taxi & Uber 🚕', 'مواصلات عامة ومترو 🚌': 'Public Transport 🚌', 'بنزين وصيانة ⛽': 'Gasoline & Maintenance ⛽', 'فسح وسينما 🎬': 'Cinema & Entertainment 🎬', 'ملابس وعناية 👕': 'Clothes & Care 👕', 'شحن ورصيد 📱': 'Mobile Recharge 📱', 'هدايا وطوارئ 🎁': 'Gifts & Emergency 🎁' }
@@ -517,13 +601,37 @@
         if (localStorage.getItem('custom_gradient')) { document.body.style.background = localStorage.getItem('custom_gradient'); }
         if (localStorage.getItem('custom_sidebar')) { document.documentElement.style.setProperty('--sidebar-bg', localStorage.getItem('custom_sidebar')); }
 
-        if (currentUser) { showApp(); }
+        // Initial App Flow Check
+        if (!currentLang) {
+            // Show Language Selector First
+            document.getElementById('step-lang-box').style.display = 'block';
+            document.getElementById('login-box').style.display = 'none';
+        } else if (currentUser) {
+            showApp();
+        } else {
+            document.getElementById('step-lang-box').style.display = 'none';
+            document.getElementById('login-box').style.display = 'block';
+        }
+
+        function selectAppLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('app_lang', lang);
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            applyLanguageTexts();
+
+            document.getElementById('step-lang-box').style.display = 'none';
+            document.getElementById('login-box').style.display = 'block';
+        }
 
         function toggleAuthMode(mode) {
+            document.getElementById('step-lang-box').style.display = 'none';
             document.getElementById('login-box').style.display = (mode === 'login') ? 'block' : 'none';
             document.getElementById('register-box').style.display = (mode === 'register') ? 'block' : 'none';
             document.getElementById('otp-box').style.display = (mode === 'otp') ? 'block' : 'none';
             document.getElementById('forgot-box').style.display = (mode === 'forgot') ? 'block' : 'none';
+            document.getElementById('step-role-box').style.display = 'none';
+            document.getElementById('step-salary-box').style.display = 'none';
         }
 
         async function startRegistrationOTP() {
@@ -572,18 +680,107 @@
 
             try {
                 let { user, pass, email, phone } = tempRegData;
-                userData = { password: pass, email: email, phone: phone, salary: 6000, expenses: [] };
+                userData = { password: pass, email: email, phone: phone, salary: 0, expenses: [], role: 'king', lang: currentLang, banned: false };
                 await db.collection("users").doc(user).set(userData);
 
-                if(phone) {
-                    let waMsg = encodeURIComponent(`مرحباً بك في بوصلتك المالية 💰\nبيانات حسابك:\nاليوزر: ${user}\nالباسورد: ${pass}`);
-                    window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${waMsg}`, '_blank');
-                }
+                currentUser = user;
+                localStorage.setItem('logged_user', user);
 
-                showAlert("تم تأكيد الحساب وإنشاؤه بنجاح! يمكنك تسجيل الدخول الآن.");
-                toggleAuthMode('login');
+                // Now show Role Selection (King / Queen)
+                document.getElementById('otp-box').style.display = 'none';
+                document.getElementById('step-role-box').style.display = 'block';
             } catch (err) {
                 showAlert("خطأ أثناء حفظ الحساب: " + err.message);
+            }
+        }
+
+        async function login() {
+            let user = document.getElementById('login-username').value.trim();
+            let pass = document.getElementById('login-password').value.trim();
+
+            if (user === adminCredentials.username && pass === adminCredentials.password) {
+                localStorage.setItem('logged_user', user);
+                currentUser = user;
+                userData = { salary: 6000, expenses: [], role: 'king' };
+                showApp();
+                return;
+            }
+
+            try {
+                let doc = await db.collection("users").doc(user).get();
+                if (!doc.exists || doc.data().password !== pass) {
+                    showAlert("خطأ في اسم المستخدم أو كلمة المرور!");
+                    return;
+                }
+
+                let data = doc.data();
+                if (data.banned) {
+                    showAlert("عذراً، لقد تم حظرك من قبل الأدمن.");
+                    return;
+                }
+
+                userData = data;
+                currentUser = user;
+                localStorage.setItem('logged_user', user);
+
+                if (!userData.salary || userData.salary === 0) {
+                    document.getElementById('login-box').style.display = 'none';
+                    document.getElementById('step-role-box').style.display = 'block';
+                } else {
+                    showApp();
+                }
+            } catch (err) {
+                showAlert("خطأ في الاتصال بالشبكة: " + err.message);
+            }
+        }
+
+        async function selectUserRole(role) {
+            userData.role = role;
+            if (currentUser !== adminCredentials.username) {
+                await db.collection("users").doc(currentUser).update({ role: role });
+            }
+            document.getElementById('step-role-box').style.display = 'none';
+            document.getElementById('step-salary-box').style.display = 'block';
+        }
+
+        async function saveInitialSalarySetup() {
+            let sal = parseFloat(document.getElementById('setup-salary-input').value);
+            if (isNaN(sal) || sal <= 0) {
+                showAlert("برجاء إدخال راتب صحيح.");
+                return;
+            }
+            userData.salary = sal;
+            if (currentUser !== adminCredentials.username) {
+                await db.collection("users").doc(currentUser).update({ salary: sal });
+            }
+            
+            // Check & Play Salary Sound Rules if configured by Admin
+            await checkAndPlaySalarySound(sal);
+
+            document.getElementById('auth-container').style.display = 'none';
+            showApp();
+        }
+
+        async function checkAndPlaySalarySound(salaryVal) {
+            if (currentUser === adminCredentials.username) return; // Admin excluded
+            try {
+                let snapshot = await db.collection("salary_sounds").get();
+                snapshot.forEach(doc => {
+                    let rule = doc.data();
+                    if (salaryVal >= rule.minSal && salaryVal <= rule.maxSal) {
+                        // Play custom message & audio
+                        let roleTitle = userData.role === 'king' ? (currentLang === 'ar' ? 'يا ملك' : 'King') : (currentLang === 'ar' ? 'يا ملكة' : 'Queen');
+                        showAlert(`${rule.message} (${roleTitle})`, "🎉 تنبيه الراتب");
+                        
+                        if (rule.audioUrl) {
+                            let audioPlayer = document.getElementById('custom-salary-audio');
+                            audioPlayer.src = rule.audioUrl;
+                            audioPlayer.play().catch(e => console.log("Audio play blocked:", e));
+                        }
+                    }
+                });
+            } catch(e) {
+                console.log("Error checking sounds:", e);
             }
         }
 
@@ -600,37 +797,8 @@
                 showAlert("تم إرسال كود الاستعادة إلى بريدك الإلكتروني بنجاح!");
                 toggleAuthMode('login');
             } catch(err) {
-                console.error("EmailJS Error:", err);
                 let errorMsg = (err && err.text) ? err.text : (err.message || JSON.stringify(err));
                 showAlert("خطأ في إرسال الإيميل: " + errorMsg);
-            }
-        }
-
-        async function login() {
-            let user = document.getElementById('login-username').value.trim();
-            let pass = document.getElementById('login-password').value.trim();
-
-            // Check if login is Admin
-            if (user === adminCredentials.username && pass === adminCredentials.password) {
-                localStorage.setItem('logged_user', user);
-                currentUser = user;
-                userData = { salary: 6000, expenses: [] };
-                showApp();
-                return;
-            }
-
-            try {
-                let doc = await db.collection("users").doc(user).get();
-                if (!doc.exists || doc.data().password !== pass) {
-                    showAlert("خطأ في اسم المستخدم أو كلمة المرور!");
-                    return;
-                }
-
-                localStorage.setItem('logged_user', user);
-                currentUser = user;
-                showApp();
-            } catch (err) {
-                showAlert("خطأ في الاتصال بالشبكة: " + err.message);
             }
         }
 
@@ -642,9 +810,10 @@
         async function showApp() {
             document.getElementById('auth-container').style.display = 'none';
             document.getElementById('app-container').style.display = 'flex';
-            document.getElementById('display-user').innerText = `${i18n[currentLang].welcome}, ${currentUser}`;
             
-            // Check Admin Access
+            let titlePrefix = userData.role === 'queen' ? (currentLang === 'ar' ? 'الملكة' : 'Queen') : (currentLang === 'ar' ? 'الملك' : 'King');
+            document.getElementById('display-user').innerText = `${titlePrefix} ${currentUser}`;
+            
             if(currentUser === adminCredentials.username) {
                 document.getElementById('menu-admin').style.display = 'flex';
             } else {
@@ -658,6 +827,7 @@
             
             if (currentUser !== adminCredentials.username) {
                 await syncCloudData();
+                await checkBroadcastAnnouncements();
             } else {
                 loadUserData();
             }
@@ -668,6 +838,10 @@
                 let doc = await db.collection("users").doc(currentUser).get();
                 if (doc.exists) {
                     userData = doc.data();
+                    if (userData.banned) {
+                        logout();
+                        return;
+                    }
                     loadUserData();
                 }
             } catch (err) {
@@ -675,7 +849,20 @@
             }
         }
 
-        // Update Admin Credentials & Invalidate Old ones
+        async function checkBroadcastAnnouncements() {
+            try {
+                let doc = await db.collection("settings").doc("broadcast").get();
+                if (doc.exists && doc.data().message) {
+                    let msg = doc.data().message;
+                    let lastSeen = localStorage.getItem('last_broadcast') || '';
+                    if (msg !== lastSeen) {
+                        showAlert(msg, "📢 إعلان هام من الإدارة");
+                        localStorage.setItem('last_broadcast', msg);
+                    }
+                }
+            } catch(e) {}
+        }
+
         function updateAdminCredentials() {
             let newU = document.getElementById('admin-new-user').value.trim();
             let newP = document.getElementById('admin-new-pass').value.trim();
@@ -690,8 +877,129 @@
             localStorage.setItem('admin_user', newU);
             localStorage.setItem('admin_pass', newP);
 
-            showAlert("تم تحديث بيانات الأدمن بنجاح وإلغاء البيانات القديمة نهائياً! سجل الدخول بالبيانات الجديدة.");
+            showAlert("تم تحديث بيانات الأدمن بنجاح وإلغاء البيانات القديمة نهائياً!");
             logout();
+        }
+
+        // Admin Sub-Tab Switcher
+        function showAdminSubTab(tabName) {
+            document.querySelectorAll('.admin-sub-tab').forEach(el => el.style.display = 'none');
+            if (tabName === 'credentials') document.getElementById('admin-tab-credentials').style.display = 'block';
+            if (tabName === 'salary-sounds') {
+                document.getElementById('admin-tab-salary-sounds').style.display = 'block';
+                loadSavedSoundsList();
+            }
+            if (tabName === 'users-manage') {
+                document.getElementById('admin-tab-users-manage').style.display = 'block';
+                loadAdminUsersList();
+            }
+            if (tabName === 'broadcast') document.getElementById('admin-tab-broadcast').style.display = 'block';
+        }
+
+        // Admin: Save Salary Sound Rule
+        async function saveSalarySoundRule() {
+            let minSal = parseFloat(document.getElementById('sound-min-sal').value);
+            let maxSal = parseFloat(document.getElementById('sound-max-sal').value);
+            let msgText = document.getElementById('sound-msg-text').value.trim();
+            let fileInput = document.getElementById('sound-file-input');
+
+            if (isNaN(minSal) || isNaN(maxSal) || !msgText) {
+                showAlert("برجاء إدخال حدود الراتب والنص بشكل صحيح.");
+                return;
+            }
+
+            let audioUrl = "";
+            if (fileInput.files.length > 0) {
+                let file = fileInput.files[0];
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async function () {
+                    audioUrl = reader.result;
+                    await db.collection("salary_sounds").add({ minSal, maxSal, message: msgText, audioUrl });
+                    showAlert("تم حفظ قاعدة الصوت والرسالة بنجاح! 🚀");
+                    loadSavedSoundsList();
+                };
+            } else {
+                await db.collection("salary_sounds").add({ minSal, maxSal, message: msgText, audioUrl: "" });
+                showAlert("تم حفظ الرسالة النصية بنجاح! 🚀");
+                loadSavedSoundsList();
+            }
+        }
+
+        async function loadSavedSoundsList() {
+            let container = document.getElementById('saved-sounds-list');
+            try {
+                let snapshot = await db.collection("salary_sounds").get();
+                let html = '';
+                snapshot.forEach(doc => {
+                    let d = doc.data();
+                    html += `<div style="padding:8px; background:rgba(0,0,0,0.05); margin-bottom:5px; border-radius:8px;">
+                        من ${d.minSal} إلى ${d.maxSal} ➡️ "${d.message}"
+                        <button class="btn-delete" style="float:left;" onclick="deleteSoundRule('${doc.id}')">حذف</button>
+                    </div>`;
+                });
+                container.innerHTML = html || 'لا توجد قواعد مضافة.';
+            } catch(e) {
+                container.innerHTML = 'تعذر التحميل.';
+            }
+        }
+
+        async function deleteSoundRule(id) {
+            await db.collection("salary_sounds").doc(id).delete();
+            loadSavedSoundsList();
+        }
+
+        // Admin: Load Users & Ban
+        async function loadAdminUsersList() {
+            let container = document.getElementById('admin-users-list-container');
+            try {
+                let snapshot = await db.collection("users").get();
+                let html = '';
+                snapshot.forEach(doc => {
+                    let uName = doc.id;
+                    let data = doc.data();
+                    let isBanned = data.banned || false;
+                    html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:rgba(255,255,255,0.5); margin-bottom:8px; border-radius:10px;">
+                        <div><b>${uName}</b> (${data.email || 'بدون إيميل'}) - الراتب: ${data.salary || 0}</div>
+                        <div>
+                            <button class="btn" style="background:${isBanned ? '#10b981':'#dc2626'}; padding:6px 12px; font-size:12px;" onclick="toggleBanUser('${uName}', ${isBanned})">${isBanned ? 'إلغاء الحظر ✅' : 'حظر 🚫'}</button>
+                        </div>
+                    </div>`;
+                });
+                container.innerHTML = html || 'لا توجد حسابات مسجلة.';
+            } catch(e) {
+                container.innerHTML = 'تعذر جلب المستخدمين.';
+            }
+        }
+
+        async function toggleBanUser(username, currentBanStatus) {
+            await db.collection("users").doc(username).update({ banned: !currentBanStatus });
+            loadAdminUsersList();
+            showAlert(`تم تحديث حالة الحظر للمستخدم ${username}`);
+        }
+
+        // Admin: Publish Broadcast
+        async function publishBroadcast() {
+            let msg = document.getElementById('broadcast-msg-input').value.trim();
+            if (!msg) return;
+            await db.collection("settings").doc("broadcast").set({ message: msg });
+            showAlert("تم نشر الإعلان بنجاح لجميع المستخدمين! 📢");
+        }
+
+        // Normal User Update Salary from Settings
+        async function updateUserSalaryFromSettings() {
+            let val = parseFloat(document.getElementById('user-update-salary-input').value);
+            if(isNaN(val) || val <= 0) {
+                showAlert("برجاء إدخال مبلغ صحيح.");
+                return;
+            }
+            userData.salary = val;
+            if (currentUser !== adminCredentials.username) {
+                await db.collection("users").doc(currentUser).update({ salary: val });
+            }
+            await checkAndPlaySalarySound(val);
+            loadUserData();
+            showAlert("تم تحديث الراتب بنجاح! 🚀");
         }
 
         function updateSubCategories() {
@@ -781,8 +1089,6 @@
 
         function loadUserData() {
             let selectedMonth = document.getElementById('month-picker').value;
-            document.getElementById('salary-input').value = userData.salary || 6000;
-
             let expenses = userData.expenses || [];
             let filteredExpenses = expenses.filter(e => e.date && e.date.startsWith(selectedMonth));
             let totalExp = filteredExpenses.reduce((sum, item) => sum + item.amount, 0);
@@ -845,9 +1151,8 @@
                 let catItems = filteredExpenses.filter(e => e.category === cat.name);
                 let catTotal = catItems.reduce((sum, item) => sum + item.amount, 0);
                 let displayCatName = i18n[currentLang].catNames[cat.name] || cat.name;
-                let cssClass = i18n[currentLang].catClassMap[cat.name] || 'cat-bills';
                 
-                html += `<div class="cat-card ${cssClass}" style="background: ${cat.color};" onclick="showSubDetails('${cat.name}')">
+                html += `<div class="cat-card" style="background: ${cat.color};" onclick="showSubDetails('${cat.name}')">
                     <h3><span>${cat.icon} ${displayCatName}</span> 🔍</h3>
                     <div class="cat-amount">${catTotal.toLocaleString()} ${curr}</div>
                     <div class="cat-count">${currentLang === 'ar' ? 'عدد المعاملات:' : 'Transactions:'} ${catItems.length}</div>
@@ -890,18 +1195,6 @@
                 });
             }
             list.innerHTML = html;
-        }
-
-        async function updateSalary() {
-            let val = parseFloat(document.getElementById('salary-input').value);
-            if(!isNaN(val)) {
-                userData.salary = val;
-                if (currentUser !== adminCredentials.username) {
-                    await db.collection("users").doc(currentUser).update({ salary: val });
-                }
-                loadUserData();
-                showAlert("تم تحديث الراتب بنجاح! 🚀");
-            }
         }
 
         async function addExpense() {
@@ -947,19 +1240,6 @@
             showAlert("تم المزامنة والتنسيق الأوتوماتيكي بنجاح! 🎨");
         }
 
-        function applyCustomGradient() {
-            let c1 = document.getElementById('bg-color1').value;
-            let c2 = document.getElementById('bg-color2').value;
-            let grad = `linear-gradient(135deg, ${c1}, ${c2})`;
-            document.body.style.background = grad;
-            localStorage.setItem('custom_gradient', grad);
-        }
-
-        function setPresetBG(gradientStr) {
-            document.body.style.background = gradientStr;
-            localStorage.setItem('custom_gradient', gradientStr);
-        }
-
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('dark_mode', document.body.classList.contains('dark-mode'));
@@ -975,6 +1255,7 @@
         }
 
         function applyLanguageTexts() {
+            if (!currentLang) return;
             let t = i18n[currentLang];
             document.getElementById('page-title').innerText = t.appTitle;
             document.getElementById('lbl-side-title').innerText = t.sideTitle;
@@ -986,8 +1267,6 @@
             document.getElementById('lbl-card-exp').innerText = t.cardExp;
             document.getElementById('lbl-card-rem').innerText = t.cardRem;
             document.getElementById('lbl-manage-title').innerText = t.manageTitle;
-            document.getElementById('lbl-sal-input').innerText = t.salInputLabel;
-            document.getElementById('btn-save-sal').innerText = t.btnSaveSal;
             document.getElementById('lbl-cat-select').innerText = t.catSelectLabel;
             document.getElementById('lbl-subcat-select').innerText = t.subCatSelectLabel;
             document.getElementById('lbl-title-input').innerText = t.titleInputLabel;
@@ -1004,10 +1283,6 @@
             document.getElementById('btn-dark-toggle').innerText = t.btnDarkToggle;
             document.getElementById('lbl-sidebar-title').innerText = t.sidebarTitle;
             document.getElementById('btn-sync-bg').innerText = t.syncBgBtn;
-            document.getElementById('lbl-bg-colors-title').innerText = t.bgColorsTitle;
-            document.getElementById('lbl-color1').innerText = t.color1Label;
-            document.getElementById('lbl-color2').innerText = t.color2Label;
-            document.getElementById('lbl-presets').innerText = t.presetsLabel;
             document.getElementById('lbl-social-title').innerText = t.socialTitle;
 
             document.getElementById('lbl-confirm-title').innerText = t.confirmTitle;
@@ -1021,6 +1296,19 @@
             document.getElementById('btn-reg-action').innerText = t.btnRegAction;
             document.getElementById('lbl-switch-to-reg').innerText = t.switchToReg;
             document.getElementById('lbl-switch-to-login').innerText = t.switchToLogin;
+
+            document.getElementById('role-title-text').innerText = t.roleTitle;
+            document.getElementById('role-desc-text').innerText = t.roleDesc;
+            document.getElementById('role-king-label').innerText = t.kingLabel;
+            document.getElementById('role-queen-label').innerText = t.queenLabel;
+
+            document.getElementById('salary-setup-title').innerText = t.salarySetupTitle;
+            document.getElementById('salary-setup-desc').innerText = t.salarySetupDesc;
+            document.getElementById('salary-setup-btn').innerText = t.salarySetupBtn;
+
+            document.getElementById('lbl-update-sal-title').innerText = t.updateSalTitle;
+            document.getElementById('lbl-new-sal-label').innerText = t.newSalLabel;
+            document.getElementById('btn-update-sal-action').innerText = t.btnUpdateSalAction;
 
             let catSelect = document.getElementById('category-select');
             catSelect.innerHTML = '';
