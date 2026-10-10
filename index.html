@@ -9,6 +9,14 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("xDW61GZav_6ZIW_TW"); // Public Key
+        })();
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -162,6 +170,9 @@
         .social-icon.youtube { background: #FF0000; } .social-icon.youtube:hover { box-shadow: 0 0 20px #FF0000; transform: translateY(-4px) scale(1.1); }
         .social-icon.twitter { background: #1DA1F2; } .social-icon.twitter:hover { box-shadow: 0 0 20px #1DA1F2; transform: translateY(-4px) scale(1.1); }
 
+        /* Ads Container Style */
+        .ads-container { margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; text-align: center; border: 1px dashed var(--border-color); }
+
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px);
@@ -211,8 +222,9 @@
         </div>
     </div>
 
-    <!-- Login & Invitation System -->
+    <!-- Login & Auth System -->
     <div id="auth-container">
+        <!-- Login Form -->
         <div class="auth-card" id="login-box">
             <h2 id="lbl-app-login-title">بوصلتك المالية 💰</h2>
             <form onsubmit="event.preventDefault(); login();">
@@ -220,20 +232,45 @@
                 <input type="password" id="login-password" placeholder="كلمة المرور" autocomplete="current-password" required>
                 <button type="submit" id="btn-login-action">تسجيل الدخول</button>
             </form>
-            <div class="switch-auth" onclick="toggleAuthMode()"><span id="lbl-switch-to-reg">لا تملك حساباً؟ أنشئ حساب جديد</span></div>
+            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                <div class="switch-auth" onclick="toggleAuthMode('register')" style="margin-top:0;"><span id="lbl-switch-to-reg">انشاء الحساب</span></div>
+                <div class="switch-auth" onclick="toggleAuthMode('forgot')" style="margin-top:0; color:#ef4444;">نسيت كلمة المرور؟</div>
+            </div>
         </div>
 
+        <!-- Registration Form (Modified: No Cloud Link text, optional phone, OTP verification) -->
         <div class="auth-card" id="register-box" style="display: none;">
-            <h2 id="lbl-app-reg-title">حساب كود الدعوة ✨</h2>
-            <form onsubmit="event.preventDefault(); register();">
+            <h2 id="lbl-app-reg-title">إنشاء الحساب ✨</h2>
+            <form onsubmit="event.preventDefault(); startRegistrationOTP();">
                 <input type="text" id="reg-invite-key" placeholder="🔑 كود الدعوة السري" required>
                 <input type="text" id="reg-username" placeholder="اسم المستخدم" autocomplete="username" required>
-                <input type="email" id="reg-email" placeholder="بريدك الإلكتروني (تأكيد الحساب)" required>
-                <input type="text" id="reg-phone" placeholder="رقم الواتساب (مثال: +2010...)" required>
+                <input type="email" id="reg-email" placeholder="بريدك الإلكتروني (لتأكيد الكود OTP)" required>
+                <input type="text" id="reg-phone" placeholder="رقم الواتساب (اختياري: +2010...)">
                 <input type="password" id="reg-password" placeholder="كلمة المرور" autocomplete="new-password" required>
-                <button type="submit" id="btn-reg-action">إنشاء الحساب والربط السحابي</button>
+                <button type="submit" id="btn-reg-action">إرسال كود التحقق وتأكيد الحساب</button>
             </form>
-            <div class="switch-auth" onclick="toggleAuthMode()"><span id="lbl-switch-to-login">لديك حساب بالفعل؟ تسجيل الدخول</span></div>
+            <div class="switch-auth" onclick="toggleAuthMode('login')"><span id="lbl-switch-to-login">لديك حساب بالفعل؟ تسجيل الدخول</span></div>
+        </div>
+
+        <!-- OTP Verification Form -->
+        <div class="auth-card" id="otp-box" style="display: none;">
+            <h2>التحقق من البريد الإلكتروني ✉️</h2>
+            <p style="font-size: 13px; color: var(--subtext-color); margin-bottom: 15px;">تم إرسال كود التأكيد (OTP) إلى بريدك الإلكتروني.</p>
+            <form onsubmit="event.preventDefault(); verifyAndCompleteRegister();">
+                <input type="text" id="otp-input" placeholder="أدخل كود الـ 6 أرقام" maxlength="6" style="text-align: center; font-size: 20px; letter-spacing: 5px;" required>
+                <button type="submit">تأكيد الكود وإنشاء الحساب</button>
+            </form>
+            <div class="switch-auth" onclick="toggleAuthMode('login')">إلغاء والعودة</div>
+        </div>
+
+        <!-- Forgot Password Form -->
+        <div class="auth-card" id="forgot-box" style="display: none;">
+            <h2>استعادة كلمة المرور 🔑</h2>
+            <form onsubmit="event.preventDefault(); sendPasswordResetCode();">
+                <input type="email" id="forgot-email" placeholder="أدخل بريدك الإلكتروني المسجل" required>
+                <button type="submit">إرسال كود الاستعادة</button>
+            </form>
+            <div class="switch-auth" onclick="toggleAuthMode('login')">العودة لتسجيل الدخول</div>
         </div>
     </div>
 
@@ -246,7 +283,15 @@
             <div class="nav-item active" id="menu-home" onclick="switchSection('home')">🏠 <span id="lbl-nav-home">الرئيسية</span></div>
             <div class="nav-item" id="menu-categories" onclick="switchSection('categories')">🎨 <span id="lbl-nav-cats">القوائم</span></div>
             <div class="nav-item" id="menu-settings" onclick="switchSection('settings')">⚙️ <span id="lbl-nav-settings">الإعدادات والألوان</span></div>
+            <!-- Admin Panel Menu Item (Visible for Admin Only) -->
+            <div class="nav-item" id="menu-admin" onclick="switchSection('admin')" style="display: none; background: rgba(99, 102, 241, 0.4);">🛡️ <span>لوحة الإدارة</span></div>
             
+            <!-- Ads Banner Container in Sidebar -->
+            <div class="ads-container">
+                <span style="font-size: 10px; color: #aaa; display: block; margin-bottom: 4px;">إعلان مخصص</span>
+                <div id="adSpace" style="font-size: 11px; color: #cbd5e1;">مساحة إعلانية (AdSense / Adsterra)</div>
+            </div>
+
             <div class="nav-item logout-btn" onclick="logout()">🚪 <span id="lbl-nav-logout">تسجيل الخروج</span></div>
         </div>
 
@@ -319,6 +364,23 @@
                 </div>
             </div>
 
+            <!-- Admin Panel View -->
+            <div id="sec-admin" class="section-view">
+                <div class="panel" style="max-width: 700px; margin: 0 auto;">
+                    <h2 style="color: #4f46e5; margin-bottom: 15px;">🛡️ لوحة تحكم الأدمن الخاصة</h2>
+                    <div class="form-group">
+                        <label>تحديث يوزر وباسورد الأدمن (إبطال القديم نهائياً):</label>
+                        <input type="text" id="admin-new-user" placeholder="اسم المستخدم الجديد للأدمن" style="margin-bottom:10px;">
+                        <input type="password" id="admin-new-pass" placeholder="كلمة المرور الجديدة" style="margin-bottom:10px;">
+                        <button class="btn" onclick="updateAdminCredentials()">تحديث بيانات الأدمن الآن</button>
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px;">
+                        <h3 style="font-size:14px; margin-bottom:8px;">إحصائيات النظام:</h3>
+                        <p id="admin-stats-info" style="font-size: 13px; color: var(--subtext-color);">جاري جلب إحصائيات الحسابات...</p>
+                    </div>
+                </div>
+            </div>
+
             <div id="sec-settings" class="section-view">
                 <div class="panel" style="max-width: 700px; margin: 0 auto;">
                     <h2 id="lbl-settings-heading">⚙️ لوحة التحكم بالألوان واللغة والعمق (Theme Control)</h2>
@@ -364,6 +426,8 @@
 
     <script>
         const INVITATION_KEY = "VIP2026";
+        const EMAILJS_SERVICE_ID = "service_3dastke";
+        const EMAILJS_TEMPLATE_ID = "template_gf0jl39";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDI0vCuCtDP0TWV1SVNEzfjNNcOEDWr10",
@@ -382,6 +446,10 @@
         let expenseChart = null;
         let pendingDeleteIndex = null;
         let currentLang = localStorage.getItem('app_lang') || 'ar';
+        
+        // OTP & Reg Temporary Variables
+        let generatedOTP = null;
+        let tempRegData = null;
 
         const i18n = {
             ar: {
@@ -396,8 +464,8 @@
                 syncBgBtn: "🔄 تنسيق أوتوماتيكي مع لون خلفية الموقع", bgColorsTitle: "🎨 تخصيص ألوان خلفية الموقع بالكامل (Background Gradients)", color1Label: "اللون الأول (Top Color):",
                 color2Label: "اللون الثاني (Bottom Color):", presetsLabel: "تدرجات زاهية جاهزة بضغطة زر (Presets):", socialTitle: "💬 تواصل معي مباشرة:", welcome: "أهلاً بك",
                 confirmTitle: "تأكيد عملية الحذف 🗑️", confirmMsg: "هل أنت متأكد من مسح هذا المصروف وإعادته للرصيد؟", btnCancel: "إلغاء", btnDelete: "مسح 🗑️",
-                loginTitle: "بوصلتك المالية 💰", regTitle: "حساب كود الدعوة ✨", btnLoginAction: "تسجيل الدخول", btnRegAction: "إنشاء الحساب والربط السحابي",
-                switchToReg: "لا تملك حساباً؟ أنشئ حساب جديد", switchToLogin: "لديك حساب بالفعل؟ تسجيل الدخول", currency: "ج.م",
+                loginTitle: "بوصلتك المالية 💰", regTitle: "إنشاء الحساب ✨", btnLoginAction: "تسجيل الدخول", btnRegAction: "إرسال كود التحقق وتأكيد الحساب",
+                switchToReg: "انشاء الحساب", switchToLogin: "لديك حساب بالفعل؟ تسجيل الدخول", currency: "ج.م",
                 catClassMap: { 'فواتير': 'cat-bills', 'أكل وشرب': 'cat-food', 'مصروفات دراسية': 'cat-study', 'مواصلات': 'cat-trans', 'خروجات ومصروف': 'cat-fun' },
                 catNames: { 'فواتير': 'فواتير', 'أكل وشرب': 'أكل وشرب', 'مصروفات دراسية': 'مصروفات دراسية', 'مواصلات': 'مواصلات', 'خروجات ومصروف': 'خروجات ومصروف' },
                 catDropdowns: { 'فواتير': '💡 فواتير (كهرباء، مياه، غاز...)', 'أكل وشرب': '🍔 أكل وشرب (لحوم، بقالة...)', 'مصروفات دراسية': '📚 مصروفات دراسية (طباعة، كتب...)', 'مواصلات': '🚗 مواصلات (تاكسي، بنزين...)', 'خروجات ومصروف': '🎉 خروجات ومصروف شخصي' },
@@ -411,8 +479,8 @@
                 monthLabel: "📅 Select Month:", settingsHeading: "⚙️ Theme, Background & Language Control", langOpt: "🌐 Full Interface Language:", darkOpt: "🌙 Color Theme (Dark / Light Mode):", btnDarkToggle: "Toggle Theme (Dark / Light)",
                 sidebarTitle: "🎨 Sidebar Theme Customization", syncBgBtn: "🔄 Sync Sidebar Color with Main Background", bgColorsTitle: "🎨 Custom Background Gradients & Colors", color1Label: "Top Gradient Color:", color2Label: "Bottom Gradient Color:",
                 presetsLabel: "Preset Vibe Gradients:", socialTitle: "💬 Connect Directly With Me:", welcome: "Welcome", confirmTitle: "Confirm Deletion 🗑️", confirmMsg: "Are you sure you want to delete this expense and restore balance?",
-                btnCancel: "Cancel", btnDelete: "Delete 🗑️", loginTitle: "Financial Compass 💰", regTitle: "Invitation Access ✨", btnLoginAction: "Login to Dashboard", btnRegAction: "Register Cloud Account",
-                switchToReg: "Don't have an account? Sign up", switchToLogin: "Already have an account? Login", currency: "EGP",
+                btnCancel: "Cancel", btnDelete: "Delete 🗑️", loginTitle: "Financial Compass 💰", regTitle: "Create Account ✨", btnLoginAction: "Login to Dashboard", btnRegAction: "Send OTP & Register",
+                switchToReg: "Sign up", switchToLogin: "Already have an account? Login", currency: "EGP",
                 catClassMap: { 'فواتير': 'cat-bills', 'أكل وشرب': 'cat-food', 'مصروفات دراسية': 'cat-study', 'مواصلات': 'cat-trans', 'خروجات ومصروف': 'cat-fun' },
                 catNames: { 'فواتير': 'Bills & Utilities', 'أكل وشرب': 'Food & Groceries', 'مصروفات دراسية': 'Education & Studies', 'مواصلات': 'Transportation & Fuel', 'خروجات ومصروف': 'Outings & Personal' },
                 catDropdowns: { 'فواتير': '💡 Bills (Electricity, Water, Internet...)', 'أكل وشرب': '🍔 Food & Groceries', 'مصروفات دراسية': '📚 Education & Studies', 'مواصلات': '🚗 Transportation & Fuel', 'خروجات ومصروف': '🎉 Outings & Personal Expenses' },
@@ -446,14 +514,15 @@
 
         if (currentUser) { showApp(); }
 
-        function toggleAuthMode() {
-            let loginBox = document.getElementById('login-box');
-            let regBox = document.getElementById('register-box');
-            if (loginBox.style.display === 'none') { loginBox.style.display = 'block'; regBox.style.display = 'none'; }
-            else { loginBox.style.display = 'none'; regBox.style.display = 'block'; }
+        function toggleAuthMode(mode) {
+            document.getElementById('login-box').style.display = (mode === 'login') ? 'block' : 'none';
+            document.getElementById('register-box').style.display = (mode === 'register') ? 'block' : 'none';
+            document.getElementById('otp-box').style.display = (mode === 'otp') ? 'block' : 'none';
+            document.getElementById('forgot-box').style.display = (mode === 'forgot') ? 'block' : 'none';
         }
 
-        async function register() {
+        // Step 1: Start Registration & Send OTP via EmailJS
+        async function startRegistrationOTP() {
             let key = document.getElementById('reg-invite-key').value.trim();
             let user = document.getElementById('reg-username').value.trim();
             let email = document.getElementById('reg-email').value.trim();
@@ -461,27 +530,75 @@
             let pass = document.getElementById('reg-password').value.trim();
 
             if (key !== INVITATION_KEY) {
-                showAlert(currentLang === 'ar' ? "كود الدعوة السري غير صحيح! تواصل مع المسؤول للحصول عليه." : "Invalid Invitation Key!");
+                showAlert("كود الدعوة السري غير صحيح!");
                 return;
             }
 
             try {
                 let doc = await db.collection("users").doc(user).get();
                 if (doc.exists) {
-                    showAlert(currentLang === 'ar' ? "اسم المستخدم مستخدم مسبقاً، اختر اسماً آخر." : "Username already exists.");
+                    showAlert("اسم المستخدم مستخدم مسبقاً، اختر اسماً آخر.");
                     return;
                 }
 
+                generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+                tempRegData = { user, pass, email, phone };
+
+                // Send OTP Email
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: email,
+                    name: user,
+                    message: `كود التحقق الخاص بك لإنشاء الحساب هو: ${generatedOTP}`
+                });
+
+                showAlert("تم إرسال كود التأكيد إلى بريدك الإلكتروني بنجاح!");
+                toggleAuthMode('otp');
+            } catch (err) {
+                showAlert("خطأ في إرسال البريد: " + err.message);
+            }
+        }
+
+        // Step 2: Verify OTP and Save to Firestore
+        async function verifyAndCompleteRegister() {
+            let enteredOTP = document.getElementById('otp-input').value.trim();
+            if (enteredOTP !== generatedOTP) {
+                showAlert("كود التحقق غير صحيح، حاول مرة أخرى.");
+                return;
+            }
+
+            try {
+                let { user, pass, email, phone } = tempRegData;
                 userData = { password: pass, email: email, phone: phone, salary: 6000, expenses: [] };
                 await db.collection("users").doc(user).set(userData);
 
-                let waMsg = encodeURIComponent(`مرحباً بك في بوصلتك المالية 💰\nبيانات حسابك السحابي:\nاليوزر: ${user}\nالباسورد: ${pass}\nالرابط: ${window.location.href}`);
-                window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${waMsg}`, '_blank');
+                // Optional WhatsApp link mechanism
+                if(phone) {
+                    let waMsg = encodeURIComponent(`مرحباً بك في بوصلتك المالية 💰\nبيانات حسابك:\nاليوزر: ${user}\nالباسورد: ${pass}`);
+                    window.open(`https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${waMsg}`, '_blank');
+                }
 
-                showAlert(currentLang === 'ar' ? "تم إنشاء الحساب السحابي بنجاح! تم تجهيز تفاصيل الحساب عبر الواتساب." : "Account created successfully!");
-                toggleAuthMode();
+                showAlert("تم تأكيد الحساب وإنشاؤه بنجاح! يمكنك تسجيل الدخول الآن.");
+                toggleAuthMode('login');
             } catch (err) {
-                showAlert("حدث خطأ أثناء الربط السحابي: " + err.message);
+                showAlert("خطأ أثناء حفظ الحساب: " + err.message);
+            }
+        }
+
+        // Forgot Password Logic
+        async function sendPasswordResetCode() {
+            let email = document.getElementById('forgot-email').value.trim();
+            let resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+            try {
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: email,
+                    name: "مستخدم",
+                    message: `كود استعادة كلمة المرور الخاصة بك هو: ${resetCode}`
+                });
+                showAlert("تم إرسال كود الاستعادة إلى بريدك الإلكتروني بنجاح!");
+                toggleAuthMode('login');
+            } catch(err) {
+                showAlert("خطأ في إرسال الإيميل: " + err.message);
             }
         }
 
@@ -492,7 +609,7 @@
             try {
                 let doc = await db.collection("users").doc(user).get();
                 if (!doc.exists || doc.data().password !== pass) {
-                    showAlert(currentLang === 'ar' ? "خطأ في اسم المستخدم أو كلمة المرور السحابية!" : "Invalid user or password!");
+                    showAlert("خطأ في اسم المستخدم أو كلمة المرور!");
                     return;
                 }
 
@@ -514,6 +631,11 @@
             document.getElementById('app-container').style.display = 'flex';
             document.getElementById('display-user').innerText = `${i18n[currentLang].welcome}, ${currentUser}`;
             
+            // Check Admin Access
+            if(currentUser === 'admin') {
+                document.getElementById('menu-admin').style.display = 'flex';
+            }
+
             document.getElementById('lang-select').value = currentLang;
             applyLanguageTexts();
             updateSubCategories();
@@ -530,6 +652,31 @@
                 }
             } catch (err) {
                 console.error("Cloud Sync Error:", err);
+            }
+        }
+
+        // Admin Update Credentials & Invalidate Old ones
+        async function updateAdminCredentials() {
+            let newU = document.getElementById('admin-new-user').value.trim();
+            let newP = document.getElementById('admin-new-pass').value.trim();
+
+            if(!newU || !newP) {
+                showAlert("برجاء إدخال اليوزر والباسورد الجديدين للأدمن.");
+                return;
+            }
+
+            try {
+                // Save new admin account and delete old 'admin' doc to invalidate it
+                await db.collection("users").doc(newU).set({
+                    password: newP, email: userData.email || "admin@fc.com", phone: userData.phone || "", salary: userData.salary, expenses: userData.expenses
+                });
+                if(currentUser !== newU) {
+                    await db.collection("users").doc(currentUser).delete();
+                }
+                showAlert("تم تحديث بيانات الأدمن وإلغاء البيانات القديمة نهائياً! سجل الدخول بالبيانات الجديدة.");
+                logout();
+            } catch(err) {
+                showAlert("حدث خطأ: " + err.message);
             }
         }
 
@@ -561,6 +708,19 @@
             } else if(sectionId === 'settings') {
                 document.getElementById('menu-settings').classList.add('active');
                 document.getElementById('sec-settings').classList.add('active');
+            } else if(sectionId === 'admin') {
+                document.getElementById('menu-admin').classList.add('active');
+                document.getElementById('sec-admin').classList.add('active');
+                loadAdminStats();
+            }
+        }
+
+        async function loadAdminStats() {
+            try {
+                let snapshot = await db.collection("users").get();
+                document.getElementById('admin-stats-info').innerText = `إجمالي الحسابات المسجلة في القاعدة: ${snapshot.size} حساب نشط.`;
+            } catch(e) {
+                document.getElementById('admin-stats-info').innerText = "تعرض لجلب الإحصائيات.";
             }
         }
 
@@ -873,7 +1033,7 @@
                 userData.expenses.splice(pendingDeleteIndex, 1);
                 await db.collection("users").doc(currentUser).update({ expenses: userData.expenses });
                 loadUserData();
-                showAlert(currentLang === 'ar' ? "تم مسح المصروف أونلاين بنجاح!" : "Expense deleted online!");
+                showAlert("تم مسح المصروف أونلاين بنجاح!");
             }
             pendingDeleteIndex = null;
         }
