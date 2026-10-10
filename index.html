@@ -13,7 +13,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            emailjs.init("xDW61GZav_6ZIW_TW"); // Public Key
+            emailjs.init("xDW61GZav_6ZIW_TW");
         })();
     </script>
     
@@ -154,6 +154,14 @@
         .cat-card { padding: 24px; border-radius: 20px; color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; }
         .cat-card h3 { font-size: 18px; margin-bottom: 12px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; }
 
+        /* Admin Luxurious Big Cards Grid */
+        .admin-cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 15px; }
+        .admin-card-btn { padding: 28px; border-radius: 22px; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: all 0.3s ease; cursor: pointer; text-align: right; border: none; font-family: 'Cairo', sans-serif; position: relative; overflow: hidden; }
+        html[dir="ltr"] .admin-card-btn { text-align: left; }
+        .admin-card-btn:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 15px 35px rgba(0,0,0,0.25); }
+        .admin-card-btn h3 { font-size: 20px; font-weight: 900; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-card-btn p { font-size: 13px; opacity: 0.9; font-weight: 600; }
+
         .sub-item {
             display: flex; justify-content: space-between; align-items: center; padding: 14px 18px;
             background: rgba(255,255,255,0.5); color: var(--text-color); margin-bottom: 10px; border-radius: 12px;
@@ -191,7 +199,7 @@
             #app-container { flex-direction: column; }
             .sidebar { width: 100%; padding: 15px; flex-direction: row; flex-wrap: wrap; justify-content: center; }
             .sidebar h2, .user-welcome, .logout-btn { display: none; }
-            .grid-section, .cards-grid, .category-card-grid { grid-template-columns: 1fr; }
+            .grid-section, .cards-grid, .category-card-grid, .admin-cards-grid { grid-template-columns: 1fr; }
             .main-content { padding: 15px; }
         }
     </style>
@@ -219,9 +227,32 @@
         </div>
     </div>
 
+    <!-- Report Modal -->
+    <div class="modal-overlay" id="report-modal">
+        <div class="custom-modal" style="max-width: 450px;">
+            <h3 style="color:#4f46e5; margin-bottom:12px;">📊 طلب التقرير المالي</h3>
+            <p style="color:var(--subtext-color); margin-bottom:15px; font-size: 13px;">اختر طريقة استلام التقرير وأدخل رقم الواتساب أو البريد:</p>
+            <div class="form-group">
+                <label>طريقة الإرسال:</label>
+                <select id="report-method" style="margin-bottom: 10px;">
+                    <option value="whatsapp">رسالة واتساب 📱</option>
+                    <option value="email">بريد إلكتروني ✉️</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>رقم الواتساب أو البريد المستهدف:</label>
+                <input type="text" id="report-destination" placeholder="+2010xxxxxxxx أو example@mail.com">
+            </div>
+            <div style="display:flex; gap:10px; margin-top: 15px;">
+                <button class="modal-btn" style="background:#e2e8f0; color:#475569;" onclick="document.getElementById('report-modal').classList.remove('active')">إلغاء</button>
+                <button class="modal-btn btn" style="background:linear-gradient(135deg, #10b981, #059669);" onclick="sendFinancialReport()">إرسال التقرير 🚀</button>
+            </div>
+        </div>
+    </div>
+
     <!-- AUTH & SETUP CONTAINER -->
     <div id="auth-container">
-        <!-- 1. Language Selection Screen (First thing shown) -->
+        <!-- 1. Language Selection Screen -->
         <div class="auth-card" id="step-lang-box">
             <h2>🌍 Language / اللغة</h2>
             <p style="font-size: 13px; color: var(--subtext-color); margin-bottom: 20px;">اختر لغة التطبيق المفضلة لديك / Select your preferred language</p>
@@ -249,10 +280,9 @@
         <div class="auth-card" id="register-box" style="display: none;">
             <h2 id="lbl-app-reg-title">إنشاء الحساب ✨</h2>
             <form onsubmit="event.preventDefault(); startRegistrationOTP();">
-                <input type="text" id="reg-invite-key" placeholder="🔑 كود الدعوة السري" required>
+                <input type="text" id="reg-invite-key" placeholder="🔑 كود الدعوة الفعال" required>
                 <input type="text" id="reg-username" placeholder="اسم المستخدم" autocomplete="username" required>
-                <input type="email" id="reg-email" placeholder="بريدك الإلكتروني (لتأكيد الكود OTP)" required>
-                <input type="text" id="reg-phone" placeholder="رقم الواتساب (اختياري: +2010...)">
+                <input type="email" id="reg-email" placeholder="بريدك الإلكتروني (لا يمكن تكراره)" required>
                 <input type="password" id="reg-password" placeholder="كلمة المرور" autocomplete="new-password" required>
                 <button type="submit" id="btn-reg-action">إرسال كود التحقق وتأكيد الحساب</button>
             </form>
@@ -280,7 +310,7 @@
             <div class="switch-auth" onclick="toggleAuthMode('login')">العودة لتسجيل الدخول</div>
         </div>
 
-        <!-- 2. King / Queen Selection Screen (After Login/Register) -->
+        <!-- 2. King / Queen Selection Screen -->
         <div class="auth-card" id="step-role-box" style="display: none;">
             <h2 id="role-title-text">👑 اختر لقبك الملكي</h2>
             <p style="font-size: 13px; color: var(--subtext-color); margin-bottom: 20px;" id="role-desc-text">حدد لقبك لنخاطبك به في التطبيق:</p>
@@ -296,7 +326,7 @@
             </div>
         </div>
 
-        <!-- 3. Initial Salary Setup Screen (First time login) -->
+        <!-- 3. Initial Salary Setup Screen -->
         <div class="auth-card" id="step-salary-box" style="display: none;">
             <h2 id="salary-setup-title">💰 إدخال الراتب الشهري</h2>
             <p style="font-size: 13px; color: var(--subtext-color); margin-bottom: 20px;" id="salary-setup-desc">من فضلك أدخل راتبك الشهري لنبدأ إدارة ميزانيتك:</p>
@@ -374,12 +404,20 @@
                 </div>
             </div>
 
-            <!-- CATEGORIES SECTION -->
+            <!-- CATEGORIES SECTION (With Report Button) -->
             <div id="sec-categories" class="section-view">
                 <div class="panel">
                     <h2 id="lbl-cats-view-title">تصنيفات الميزانية التفاعلية</h2>
                     <p style="font-size: 14px; color: var(--subtext-color); margin-bottom: 20px;" id="lbl-cats-desc">👇 اضغط على أي كارت لاستعراض التفاصيل الدقيقة وحذف أو مراجعة المعاملات:</p>
                     <div class="category-card-grid" id="category-boxes-container"></div>
+                    
+                    <!-- Report Button Added Here -->
+                    <div style="margin-top: 25px; text-align: center;">
+                        <button class="btn" style="background: linear-gradient(135deg, #25D366, #128C7E); max-width: 300px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 10px;" onclick="document.getElementById('report-modal').classList.add('active')">
+                            <i class="fab fa-whatsapp" style="font-size: 20px;"></i> طلب التقرير المالي (واتساب / إيميل) 📊
+                        </button>
+                    </div>
+
                     <div id="sub-details-area" style="display: none; margin-top: 25px;">
                         <hr style="border:0; border-top:1px solid var(--border-color); margin-bottom: 20px;">
                         <h3 id="selected-cat-title" style="color: #4f46e5; margin-bottom: 15px; font-weight: 900;"></h3>
@@ -388,22 +426,56 @@
                 </div>
             </div>
 
-            <!-- ADMIN PANEL VIEW -->
+            <!-- ADMIN PANEL VIEW (With Luxurious Big Buttons Style) -->
             <div id="sec-admin" class="section-view">
-                <div class="panel" style="max-width: 800px; margin: 0 auto;">
-                    <h2 style="color: #4f46e5; margin-bottom: 15px;">🛡️ لوحة تحكم الأدمن الخاصة</h2>
+                <div class="panel" style="max-width: 900px; margin: 0 auto;">
+                    <h2 style="color: #4f46e5; margin-bottom: 20px; font-size: 22px;">🛡️ لوحة تحكم الأدمن الذكية</h2>
                     
-                    <!-- Admin Sub-Navigation Buttons / Sections -->
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px;">
-                        <button class="btn btn-salary" onclick="showAdminSubTab('credentials')">🔑 تغيير بيانات الأدمن</button>
-                        <button class="btn btn-salary" onclick="showAdminSubTab('salary-sounds')">🎵 أصوات ورسائل الرواتب</button>
-                        <button class="btn btn-salary" onclick="showAdminSubTab('users-manage')">👥 إدارة المستخدمين والحظر</button>
-                        <button class="btn btn-salary" onclick="showAdminSubTab('broadcast')">📢 لوحة الإعلانات العامة</button>
+                    <!-- Admin Luxurious Big Cards Grid -->
+                    <div class="admin-cards-grid" id="admin-main-menu">
+                        <button class="admin-card-btn" style="background: linear-gradient(135deg, #4f46e5, #7c3aed);" onclick="showAdminSubTab('invite-codes')">
+                            <h3><span>🔑 إدارة أكواد الدعوة</span> ➕</h3>
+                            <p>إنشاء، تفعيل، وإلغاء أكواد دعوة المستخدمين الجدد</p>
+                        </button>
+                        <button class="admin-card-btn" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="showAdminSubTab('salary-sounds')">
+                            <h3><span>🎵 أصوات ورسائل الرواتب</span> 🔊</h3>
+                            <p>تخصيص الملفات الصوتية والرسائل حسب شرائح الرواتب</p>
+                        </button>
+                        <button class="admin-card-btn" style="background: linear-gradient(135deg, #f7971e, #ffd200); color: #fff;" onclick="showAdminSubTab('users-manage')">
+                            <h3><span>👥 إدارة المستخدمين والحظر</span> 🚫</h3>
+                            <p>استعراض المشتركين وحظر أو إلغاء حظر الحسابات</p>
+                        </button>
+                        <button class="admin-card-btn" style="background: linear-gradient(135deg, #ff416c, #ff4b2b);" onclick="showAdminSubTab('broadcast')">
+                            <h3><span>📢 لوحة الإعلانات العامة</span> 🚀</h3>
+                            <p>نشر تنبيهات وتحديثات فورية تظهر لجميع المشتركين</p>
+                        </button>
+                        <button class="admin-card-btn" style="background: linear-gradient(135deg, #00c6ff, #0072ff); grid-column: span 2;" onclick="showAdminSubTab('credentials')">
+                            <h3><span>🔐 تغيير بيانات الأدمن الأساسية</span> ⚙️</h3>
+                            <p>تحديث اسم المستخدم وكلمة المرور الخاصة بلوحة الإدارة</p>
+                        </button>
                     </div>
 
-                    <!-- 1. Credentials Tab -->
-                    <div id="admin-tab-credentials" class="admin-sub-tab" style="display:none;">
-                        <h3 style="font-size:15px; margin-bottom:12px;">تحديث يوزر وباسورد الأدمن (إبطال القديم نهائياً):</h3>
+                    <!-- Back to Admin Menu Button -->
+                    <div id="admin-back-btn-container" style="display:none; margin-bottom: 20px;">
+                        <button class="btn" style="background: #64748b; max-width: 180px;" onclick="backToAdminMenu()">⬅️ العودة للقائمة الرئيسية</button>
+                    </div>
+
+                    <!-- 1. Invite Codes Management Tab -->
+                    <div id="admin-tab-invite-codes" class="admin-sub-tab" style="display:none; margin-top:20px;">
+                        <h3 style="font-size:16px; margin-bottom:12px; color:#4f46e5;">🔑 إنشاء وإدارة أكواد الدعوة:</h3>
+                        <div class="form-group">
+                            <input type="text" id="new-invite-code-input" placeholder="أدخل كود دعوة جديد (مثلا: VIP2027)">
+                            <button class="btn" onclick="createNewInviteCode()">إنشاء وتفعيل الكود أونلاين 🚀</button>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <h4 style="font-size:14px; margin-bottom:8px;">الأكواد النشطة والسابقة:</h4>
+                            <div id="invite-codes-list-container" style="max-height: 250px; overflow-y: auto;">جاري التحميل...</div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Credentials Tab -->
+                    <div id="admin-tab-credentials" class="admin-sub-tab" style="display:none; margin-top:20px;">
+                        <h3 style="font-size:16px; margin-bottom:12px; color:#4f46e5;">تحديث يوزر وباسورد الأدمن (إبطال القديم نهائياً):</h3>
                         <div class="form-group">
                             <input type="text" id="admin-new-user" placeholder="اسم المستخدم الجديد للأدمن" style="margin-bottom:10px;">
                             <input type="password" id="admin-new-pass" placeholder="كلمة المرور الجديدة" style="margin-bottom:10px;">
@@ -411,9 +483,9 @@
                         </div>
                     </div>
 
-                    <!-- 2. Salary Sounds & Messages Tab -->
-                    <div id="admin-tab-salary-sounds" class="admin-sub-tab" style="display:none;">
-                        <h3 style="font-size:15px; margin-bottom:12px;">🎵 إضافة وتخصيص أصوات ورسائل الرواتب:</h3>
+                    <!-- 3. Salary Sounds & Messages Tab -->
+                    <div id="admin-tab-salary-sounds" class="admin-sub-tab" style="display:none; margin-top:20px;">
+                        <h3 style="font-size:16px; margin-bottom:12px; color:#10b981;">🎵 إضافة وتخصيص أصوات ورسائل الرواتب:</h3>
                         <div class="form-group">
                             <label>الحد الأدنى للراتب (من):</label>
                             <input type="number" id="sound-min-sal" placeholder="مثال: 3000">
@@ -438,22 +510,22 @@
                         </div>
                     </div>
 
-                    <!-- 3. Users Management & Ban Tab -->
-                    <div id="admin-tab-users-manage" class="admin-sub-tab" style="display:none;">
-                        <h3 style="font-size:15px; margin-bottom:12px;">👥 إدارة حسابات المستخدمين:</h3>
+                    <!-- 4. Users Management & Ban Tab -->
+                    <div id="admin-tab-users-manage" class="admin-sub-tab" style="display:none; margin-top:20px;">
+                        <h3 style="font-size:16px; margin-bottom:12px; color:#f7971e;">👥 إدارة حسابات المستخدمين:</h3>
                         <div id="admin-users-list-container" style="max-height: 300px; overflow-y: auto;"></div>
                     </div>
 
-                    <!-- 4. Broadcast Announcement Tab -->
-                    <div id="admin-tab-broadcast" class="admin-sub-tab" style="display:none;">
-                        <h3 style="font-size:15px; margin-bottom:12px;">📢 إرسال إعلان عام لجميع المستخدمين:</h3>
+                    <!-- 5. Broadcast Announcement Tab -->
+                    <div id="admin-tab-broadcast" class="admin-sub-tab" style="display:none; margin-top:20px;">
+                        <h3 style="font-size:16px; margin-bottom:12px; color:#ff416c;">📢 إرسال إعلان عام لجميع المستخدمين:</h3>
                         <div class="form-group">
                             <textarea id="broadcast-msg-input" placeholder="اكتب نص الإعلان الذي سيظهر لجميع المستخدمين فور دخولهم..." rows="4"></textarea>
                             <button class="btn" onclick="publishBroadcast()">نشر الإعلان الآن 🚀</button>
                         </div>
                     </div>
 
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px;">
+                    <div style="margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px;">
                         <h3 style="font-size:14px; margin-bottom:8px;">إحصائيات النظام:</h3>
                         <p id="admin-stats-info" style="font-size: 13px; color: var(--subtext-color);">جاري جلب إحصائيات الحسابات...</p>
                     </div>
@@ -465,7 +537,7 @@
                 <div class="panel" style="max-width: 700px; margin: 0 auto;">
                     <h2 id="lbl-settings-heading">⚙️ لوحة التحكم بالألوان واللغة والعمق (Theme Control)</h2>
                     
-                    <!-- Salary Update Section (Normal User) -->
+                    <!-- Salary Update Section -->
                     <div style="border: 2px dashed var(--border-color); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
                         <h3 style="font-size: 15px; margin-bottom: 12px; color: #4f46e5;" id="lbl-update-sal-title">💰 تحديث الراتب الشهري (Salary Update)</h3>
                         <div class="form-group">
@@ -500,11 +572,10 @@
         </div>
     </div>
 
-    <!-- Hidden Audio Player Element -->
+    <!-- Hidden Audio Player -->
     <audio id="custom-salary-audio" style="display:none;"></audio>
 
     <script>
-        const INVITATION_KEY = "VIP2026";
         const EMAILJS_SERVICE_ID = "service_3dastke";
         const EMAILJS_TEMPLATE_ID = "template_94qjkzl";
 
@@ -529,7 +600,7 @@
         let userData = { salary: 6000, expenses: [], role: 'king', lang: 'ar' };
         let expenseChart = null;
         let pendingDeleteIndex = null;
-        let currentLang = localStorage.getItem('app_lang') || null; // Will show language select first if not set
+        let currentLang = localStorage.getItem('app_lang') || null;
         
         let generatedOTP = null;
         let tempRegData = null;
@@ -601,9 +672,7 @@
         if (localStorage.getItem('custom_gradient')) { document.body.style.background = localStorage.getItem('custom_gradient'); }
         if (localStorage.getItem('custom_sidebar')) { document.documentElement.style.setProperty('--sidebar-bg', localStorage.getItem('custom_sidebar')); }
 
-        // Initial App Flow Check
         if (!currentLang) {
-            // Show Language Selector First
             document.getElementById('step-lang-box').style.display = 'block';
             document.getElementById('login-box').style.display = 'none';
         } else if (currentUser) {
@@ -635,26 +704,40 @@
         }
 
         async function startRegistrationOTP() {
-            let key = document.getElementById('reg-invite-key').value.trim();
+            let inviteKey = document.getElementById('reg-invite-key').value.trim();
             let user = document.getElementById('reg-username').value.trim();
             let email = document.getElementById('reg-email').value.trim();
-            let phone = document.getElementById('reg-phone').value.trim();
             let pass = document.getElementById('reg-password').value.trim();
 
-            if (key !== INVITATION_KEY) {
-                showAlert("كود الدعوة السري غير صحيح!");
+            if (!inviteKey || !user || !email || !pass) {
+                showAlert("برجاء إكمال جميع الحقول المطلوبة.");
                 return;
             }
 
             try {
-                let doc = await db.collection("users").doc(user).get();
-                if (doc.exists || user === adminCredentials.username) {
+                // 1. Check if email was used before
+                let emailQuery = await db.collection("users").where("email", "==", email).get();
+                if (!emailQuery.empty) {
+                    showAlert("عذراً، هذا البريد الإلكتروني مسجل مسبقاً في الموقع ولا يمكن استخدامه مرة أخرى!");
+                    return;
+                }
+
+                // 2. Check if invite code is valid and active
+                let codeDoc = await db.collection("invite_codes").doc(inviteKey).get();
+                if (!codeDoc.exists || !codeDoc.data().active) {
+                    showAlert("كود الدعوة غير صحيح أو تم إيقافه بواسطة الأدمن!");
+                    return;
+                }
+
+                // 3. Check username
+                let userDoc = await db.collection("users").doc(user).get();
+                if (userDoc.exists || user === adminCredentials.username) {
                     showAlert("اسم المستخدم مستخدم مسبقاً، اختر اسماً آخر.");
                     return;
                 }
 
                 generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-                tempRegData = { user, pass, email, phone };
+                tempRegData = { user, pass, email };
 
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_email: email,
@@ -662,7 +745,7 @@
                     message: generatedOTP
                 });
 
-                showAlert("تم إرسال كود التأكيد إلى بريدك الإلكتروني بنجاح!");
+                showAlert("تم إرسال كود التأكيد (OTP) إلى بريدك الإلكتروني بنجاح!");
                 toggleAuthMode('otp');
             } catch (err) {
                 console.error("EmailJS Error:", err);
@@ -679,14 +762,13 @@
             }
 
             try {
-                let { user, pass, email, phone } = tempRegData;
-                userData = { password: pass, email: email, phone: phone, salary: 0, expenses: [], role: 'king', lang: currentLang, banned: false };
+                let { user, pass, email } = tempRegData;
+                userData = { password: pass, email: email, salary: 0, expenses: [], role: 'king', lang: currentLang, banned: false };
                 await db.collection("users").doc(user).set(userData);
 
                 currentUser = user;
                 localStorage.setItem('logged_user', user);
 
-                // Now show Role Selection (King / Queen)
                 document.getElementById('otp-box').style.display = 'none';
                 document.getElementById('step-role-box').style.display = 'block';
             } catch (err) {
@@ -754,7 +836,6 @@
                 await db.collection("users").doc(currentUser).update({ salary: sal });
             }
             
-            // Check & Play Salary Sound Rules if configured by Admin
             await checkAndPlaySalarySound(sal);
 
             document.getElementById('auth-container').style.display = 'none';
@@ -762,13 +843,12 @@
         }
 
         async function checkAndPlaySalarySound(salaryVal) {
-            if (currentUser === adminCredentials.username) return; // Admin excluded
+            if (currentUser === adminCredentials.username) return;
             try {
                 let snapshot = await db.collection("salary_sounds").get();
                 snapshot.forEach(doc => {
                     let rule = doc.data();
                     if (salaryVal >= rule.minSal && salaryVal <= rule.maxSal) {
-                        // Play custom message & audio
                         let roleTitle = userData.role === 'king' ? (currentLang === 'ar' ? 'يا ملك' : 'King') : (currentLang === 'ar' ? 'يا ملكة' : 'Queen');
                         showAlert(`${rule.message} (${roleTitle})`, "🎉 تنبيه الراتب");
                         
@@ -789,6 +869,12 @@
             let resetCode = Math.floor(100000 + Math.random() * 900000).toString();
 
             try {
+                let emailQuery = await db.collection("users").where("email", "==", email).get();
+                if(emailQuery.empty) {
+                    showAlert("هذا البريد غير مسجل لدينا.");
+                    return;
+                }
+
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_email: email,
                     name: "مستخدم",
@@ -881,9 +967,16 @@
             logout();
         }
 
-        // Admin Sub-Tab Switcher
+        // Admin Navigation Control
         function showAdminSubTab(tabName) {
+            document.getElementById('admin-main-menu').style.display = 'none';
+            document.getElementById('admin-back-btn-container').style.display = 'block';
             document.querySelectorAll('.admin-sub-tab').forEach(el => el.style.display = 'none');
+
+            if (tabName === 'invite-codes') {
+                document.getElementById('admin-tab-invite-codes').style.display = 'block';
+                loadInviteCodesList();
+            }
             if (tabName === 'credentials') document.getElementById('admin-tab-credentials').style.display = 'block';
             if (tabName === 'salary-sounds') {
                 document.getElementById('admin-tab-salary-sounds').style.display = 'block';
@@ -896,7 +989,59 @@
             if (tabName === 'broadcast') document.getElementById('admin-tab-broadcast').style.display = 'block';
         }
 
-        // Admin: Save Salary Sound Rule
+        function backToAdminMenu() {
+            document.querySelectorAll('.admin-sub-tab').forEach(el => el.style.display = 'none');
+            document.getElementById('admin-back-btn-container').style.display = 'none';
+            document.getElementById('admin-main-menu').style.display = 'grid';
+        }
+
+        // Admin: Create & Manage Invite Codes
+        async function createNewInviteCode() {
+            let code = document.getElementById('new-invite-code-input').value.trim();
+            if (!code) {
+                showAlert("برجاء إدخال كود دعوة.");
+                return;
+            }
+            await db.collection("invite_codes").doc(code).set({ active: true, createdAt: new Date() });
+            document.getElementById('new-invite-code-input').value = '';
+            showAlert("تم إنشاء وتفعيل كود الدعوة بنجاح! 🚀");
+            loadInviteCodesList();
+        }
+
+        async function loadInviteCodesList() {
+            let container = document.getElementById('invite-codes-list-container');
+            try {
+                let snapshot = await db.collection("invite_codes").get();
+                let html = '';
+                snapshot.forEach(doc => {
+                    let code = doc.id;
+                    let data = doc.data();
+                    let isActive = data.active;
+                    html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:rgba(255,255,255,0.6); margin-bottom:8px; border-radius:10px;">
+                        <div><b>${code}</b> - الحالة: <span style="color:${isActive ? '#10b981':'#dc2626'}">${isActive ? 'مفعل ✅' : 'متوقف ❌'}</span></div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn" style="background:${isActive ? '#dc2626':'#10b981'}; padding:6px 12px; font-size:12px;" onclick="toggleInviteCode('${code}', ${isActive})">${isActive ? 'إيقاف 🛑' : 'تفعيل ✅'}</button>
+                            <button class="btn-delete" onclick="deleteInviteCode('${code}')">حذف</button>
+                        </div>
+                    </div>`;
+                });
+                container.innerHTML = html || 'لا توجد أُكواد مسجلة.';
+            } catch(e) {
+                container.innerHTML = 'تعذر جلب الأكواد.';
+            }
+        }
+
+        async function toggleInviteCode(code, currentStatus) {
+            await db.collection("invite_codes").doc(code).update({ active: !currentStatus });
+            loadInviteCodesList();
+        }
+
+        async function deleteInviteCode(code) {
+            await db.collection("invite_codes").doc(code).delete();
+            loadInviteCodesList();
+        }
+
+        // Admin: Salary Sound Rules
         async function saveSalarySoundRule() {
             let minSal = parseFloat(document.getElementById('sound-min-sal').value);
             let maxSal = parseFloat(document.getElementById('sound-max-sal').value);
@@ -984,6 +1129,38 @@
             if (!msg) return;
             await db.collection("settings").doc("broadcast").set({ message: msg });
             showAlert("تم نشر الإعلان بنجاح لجميع المستخدمين! 📢");
+        }
+
+        // Financial Report Generator & Sender
+        function sendFinancialReport() {
+            let method = document.getElementById('report-method').value;
+            let dest = document.getElementById('report-destination').value.trim();
+            if(!dest) {
+                showAlert("برجاء إدخال رقم الواتساب أو البريد المستهدف.");
+                return;
+            }
+
+            let sal = userData.salary || 0;
+            let expenses = userData.expenses || [];
+            let totalExp = expenses.reduce((sum, item) => sum + item.amount, 0);
+            let rem = sal - totalExp;
+
+            let reportText = `📊 التقرير المالي من بوصلتك المالية\n👤 المستخدم: ${currentUser}\n💰 الراتب: ${sal}\n💸 إجمالي المصروفات: ${totalExp}\n💎 الرصيد المتاح: ${rem}`;
+
+            if(method === 'whatsapp') {
+                window.open(`https://wa.me/${dest.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(reportText)}`, '_blank');
+            } else {
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: dest,
+                    name: currentUser,
+                    message: reportText
+                }).then(() => {
+                    showAlert("تم إرسال التقرير بنجاح عبر البريد الإلكتروني! ✉️");
+                }).catch(err => {
+                    showAlert("فشل إرسال التقرير عبر البريد.");
+                });
+            }
+            document.getElementById('report-modal').classList.remove('active');
         }
 
         // Normal User Update Salary from Settings
