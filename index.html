@@ -153,7 +153,6 @@
         html[dir="ltr"] .transaction-item { border-right: none; border-left: 4px solid #4f46e5; }
         .transaction-item:hover { background: rgba(255,255,255,0.15); transform: translateX(-4px); }
 
-        /* Matched Dimensions & Grid Layout for Categories & Admin Panel */
         .category-card-grid, .admin-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; width: 100%; }
         
         .cat-card, .admin-card-btn { padding: 24px; border-radius: 20px; color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; border: none; text-align: right; font-family: 'Cairo', sans-serif; min-height: 120px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -162,7 +161,6 @@
         .cat-card h3, .admin-card-btn h3 { font-size: 18px; margin-bottom: 8px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; }
         .admin-card-btn p { font-size: 12px; opacity: 0.9; font-weight: 600; line-height: 1.4; }
 
-        /* Interactive Glow Effects */
         .cat-card.cat-bills:hover, .admin-card-btn.adm-c1:hover { box-shadow: 0 0 30px rgba(255, 65, 108, 0.8), 0 10px 25px rgba(0,0,0,0.3); transform: translateY(-6px) scale(1.02); }
         .cat-card.cat-food:hover, .admin-card-btn.adm-c2:hover { box-shadow: 0 0 30px rgba(138, 43, 226, 0.8), 0 10px 25px rgba(0,0,0,0.3); transform: translateY(-6px) scale(1.02); }
         .cat-card.cat-study:hover, .admin-card-btn.adm-c3:hover { box-shadow: 0 0 30px rgba(0, 198, 255, 0.8), 0 10px 25px rgba(0,0,0,0.3); transform: translateY(-6px) scale(1.02); }
@@ -202,7 +200,6 @@
         .legend-item { display: flex; align-items: center; gap: 6px; }
         .legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 
-        /* Chat Window Styling */
         .chat-box { height: 350px; overflow-y: auto; background: rgba(15, 23, 42, 0.6); padding: 18px; border-radius: 16px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
         .chat-msg { max-width: 75%; padding: 12px 16px; border-radius: 16px; font-size: 14px; font-weight: 600; line-height: 1.5; word-wrap: break-word; }
         .chat-msg.sent { background: linear-gradient(135deg, #10b981, #059669); color: white; align-self: flex-start; border-bottom-right-radius: 2px; }
@@ -434,7 +431,6 @@
                     <h2>💬 الدعم الفني والشات المباشر مع الأدمن</h2>
                     <p style="font-size:13px; color:var(--subtext-color); margin-bottom:15px;">المحادثات سريّة ومباشرة بينك وبين الأدمن فقط.</p>
                     
-                    <!-- Real-time chat message box -->
                     <div class="chat-box" id="user-chat-box"></div>
                     
                     <div style="display:flex; gap:10px;">
@@ -444,7 +440,7 @@
                 </div>
             </div>
 
-            <!-- ADMIN PANEL VIEW (Identical Matched Dimensions) -->
+            <!-- ADMIN PANEL VIEW -->
             <div id="sec-admin" class="section-view">
                 <div class="panel">
                     <h2 style="color: #4f46e5; margin-bottom: 20px; font-size: 22px;">🛡️ لوحة تحكم الأدمن الذكية</h2>
@@ -480,7 +476,6 @@
                         <button class="btn" style="background: #64748b; max-width: 180px;" onclick="backToAdminMenu()">⬅️ العودة للقائمة الرئيسية</button>
                     </div>
 
-                    <!-- Sub Tab: Invite Codes -->
                     <div id="admin-tab-invite-codes" class="admin-sub-tab" style="display:none; margin-top:20px;">
                         <h3 style="font-size:16px; margin-bottom:12px; color:#4f46e5;">🔑 إنشاء وإدارة أكواد الدعوة:</h3>
                         <div class="form-group">
@@ -493,7 +488,6 @@
                         </div>
                     </div>
 
-                    <!-- Sub Tab: Admin Accounts -->
                     <div id="admin-tab-admin-accounts" class="admin-sub-tab" style="display:none; margin-top:20px;">
                         <h3 style="font-size:16px; margin-bottom:12px; color:#4f46e5;">🔑 إدارة وإنشاء حسابات الأدمن الفرعية:</h3>
                         <div class="form-group" style="border:1px dashed var(--border-color); padding:15px; border-radius:12px; margin-bottom:15px;">
@@ -505,7 +499,6 @@
                         </div>
                     </div>
 
-                    <!-- Sub Tab: Salary Sounds -->
                     <div id="admin-tab-salary-sounds" class="admin-sub-tab" style="display:none; margin-top:20px;">
                         <h3 style="font-size:16px; margin-bottom:12px; color:#10b981;">🎵 إضافة وتخصيص أصوات ورسائل الرواتب:</h3>
                         <div class="form-group"><label>الحد الأدنى للراتب (من):</label><input type="number" id="sound-min-sal" placeholder="3000"></div>
@@ -519,13 +512,11 @@
                         </div>
                     </div>
 
-                    <!-- Sub Tab: Users Management -->
                     <div id="admin-tab-users-manage" class="admin-sub-tab" style="display:none; margin-top:20px;">
                         <h3 style="font-size:16px; margin-bottom:12px; color:#f7971e;">👥 إدارة حسابات المستخدمين وحذفهم:</h3>
                         <div id="admin-users-list-container" style="max-height: 300px; overflow-y: auto;"></div>
                     </div>
 
-                    <!-- Sub Tab: Broadcast -->
                     <div id="admin-tab-broadcast" class="admin-sub-tab" style="display:none; margin-top:20px;">
                         <h3 style="font-size:16px; margin-bottom:12px; color:#ff416c;">📢 إرسال إعلان عام لجميع المستخدمين:</h3>
                         <div class="form-group">
@@ -534,7 +525,6 @@
                         </div>
                     </div>
 
-                    <!-- Sub Tab: Admin Chat Manage -->
                     <div id="admin-tab-chat-manage" class="admin-sub-tab" style="display:none; margin-top:20px;">
                         <h3 style="font-size:16px; margin-bottom:12px; color:#11998e;">💬 الرد على شات واستفسارات المستخدمين:</h3>
                         <div class="form-group">
@@ -1038,9 +1028,6 @@
             } catch(e) {}
         }
 
-        // --- REAL-TIME CHAT SYSTEM FIXES ---
-
-        // 1. User Side Chat Listener
         function listenToUserChat() {
             if (userChatUnsubscribe) userChatUnsubscribe();
             
@@ -1053,7 +1040,6 @@
                         messages.push({ id: doc.id, ...doc.data() });
                     });
 
-                    // Sort client-side by timestamp to prevent Firebase Composite Index requirements
                     messages.sort((a, b) => {
                         let tA = a.timestamp ? (a.timestamp.seconds || 0) : 0;
                         let tB = b.timestamp ? (b.timestamp.seconds || 0) : 0;
@@ -1080,7 +1066,6 @@
                 });
         }
 
-        // Send User Message
         async function sendUserMessage() {
             let field = document.getElementById('user-chat-input');
             let text = field.value.trim();
@@ -1099,7 +1084,6 @@
             });
         }
 
-        // 2. Admin Side Chat Listener
         async function loadAdminChatUsersSelect() {
             let select = document.getElementById('admin-chat-user-select');
             try {
@@ -1135,7 +1119,6 @@
                         messages.push({ id: doc.id, ...doc.data() });
                     });
 
-                    // Client-side Sort
                     messages.sort((a, b) => {
                         let tA = a.timestamp ? (a.timestamp.seconds || 0) : 0;
                         let tB = b.timestamp ? (b.timestamp.seconds || 0) : 0;
@@ -1144,7 +1127,7 @@
 
                     let html = '';
                     if (messages.length === 0) {
-                        html = `<div style="text-align:center; color:var(--subtext-color); margin-auto:auto;">لا توجد رسائل سابقة مع المستحدم ${targetUser}.</div>`;
+                        html = `<div style="text-align:center; color:var(--subtext-color); margin-auto:auto;">لا توجد رسائل سابقة مع المستخدم ${targetUser}.</div>`;
                     } else {
                         messages.forEach(m => {
                             let isAdminSent = (m.sender === 'admin');
@@ -1160,7 +1143,6 @@
                 });
         }
 
-        // Send Admin Message
         async function sendAdminMessage() {
             let targetUser = document.getElementById('admin-chat-user-select').value;
             let field = document.getElementById('admin-chat-input');
@@ -1180,7 +1162,6 @@
             });
         }
 
-        // Admin Navigation & Functions
         function showAdminSubTab(tabName) {
             document.getElementById('admin-main-menu').style.display = 'none';
             document.getElementById('admin-back-btn-container').style.display = 'block';
@@ -1369,7 +1350,6 @@
             showAlert("تم نشر الإعلان بنجاح لجميع المستخدمين! 📢");
         }
 
-        // Financial Report
         function sendFinancialReport() {
             let method = document.getElementById('report-method').value;
             let dest = document.getElementById('report-destination').value.trim();
@@ -1401,7 +1381,6 @@
             document.getElementById('report-modal').classList.remove('active');
         }
 
-        // Background Control
         function applyCustomBackground() {
             let c1 = document.getElementById('bg-color1').value;
             let c2 = document.getElementById('bg-color2').value;
